@@ -144,7 +144,7 @@
 		<Card.Footer class="flex-col gap-2">
 			<Hcaptcha
 				bind:this={hcaptcharef}
-				size="invisible"
+				size="normal"
 				onSuccess={handleCaptchaSuccess}
 				onExpired={handleCaptchaExpired}
 				onError={handleCaptchaError}
