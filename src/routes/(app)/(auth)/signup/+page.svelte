@@ -28,15 +28,7 @@
 	let hcaptcharef = $state();
 
 	const form = superForm(data.form, {
-		validators: zod4Client(createschema),
-		onResult: ({ result }) => {
-			resetCaptcha = true;
-
-			if (result?.status !== 200) {
-				toast.error('There was an error. Please try again.');
-				console.log(result);
-			}
-		}
+		validators: zod4Client(createschema)
 	});
 
 	const { form: formData, enhance, delayed, message } = form;
@@ -58,7 +50,8 @@
 	}
 
 	function handleCaptchaClose() {
-		// Handle when user closes the captcha challenge
+		captchaToken = '';
+		$formData['h-captcha-response'] = '';
 	}
 
 	function handleCaptchaLoad() {
