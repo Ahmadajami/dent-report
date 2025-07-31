@@ -1,30 +1,26 @@
 <script lang="ts">
 	import { cn } from '$lib/utils';
 	import type { Snippet } from 'svelte';
-	let {
-		className = '',
-		inview = $bindable(false),
-		children
-	}: { className?: String; children?: Snippet; inview: boolean } = $props();
+	let { className = '', children }: { className?: String; children?: Snippet } = $props();
 	let delayedInview = $state(false);
 
 	$effect(() => {
-		if (inview) {
-			// If inview becomes false, set delayedInview to false after a delay
-			const timeoutId = setTimeout(() => {
-				delayedInview = true;
-			}, 1200); // 300ms delay, adjust as needed
+		// If inview becomes false, set delayedInview to false after a delay
+		const timeoutId = setTimeout(() => {
+			delayedInview = true;
+		}, 1200); // 300ms delay, adjust as needed
 
-			// Cleanup the timeout if inview changes again before the timeout fires
-			return () => clearTimeout(timeoutId);
-		}
+		// Cleanup the timeout if inview changes again before the timeout fires
+		return () => clearTimeout(timeoutId);
 	});
 </script>
 
 <span
-	class:opacity-0={!delayedInview}
-	class:opacity-100={delayedInview}
-	class={cn(' relative inline-flex  overflow-hidden transition-opacity ease-in', className)}
+	style:visibility={delayedInview ? 'visible' : 'hidden'}
+	class={cn(
+		' relative inline-flex  overflow-hidden opacity-100 transition-opacity delay-700 duration-500 ease-in starting:opacity-0',
+		className
+	)}
 >
 	{#if children}
 		{@render children()}

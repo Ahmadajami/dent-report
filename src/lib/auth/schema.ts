@@ -1,8 +1,8 @@
 import { z } from 'zod/v4';
 
 export const authschema = z.object({
-	email: z.email(),
-	password: z.string().min(8, { error: 'Too short Password.' })
+	email: z.email('Wrong Email'),
+	password: z.string().min(8, 'Too short Password.' )
 });
 
 export const DOCTOR_TYPES = ['Empty', 'Dentist', 'Optometrist'] as const;
