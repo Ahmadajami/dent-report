@@ -1,5 +1,4 @@
 @import 'tailwindcss';
-
 @import 'tw-animate-css';
 
 @custom-variant dark (&:is(.dark *));
@@ -109,8 +108,169 @@
 	--color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
 	--color-sidebar-border: var(--sidebar-border);
 	--color-sidebar-ring: var(--sidebar-ring);
+	--animate-background: background-move ease infinite;
+	--animate-fade-in: fade-in 1000ms var(20ms, 0ms) ease forwards;
+	--animate-moveUp: moveUp 0.8s ease-out forwards;
+	--animate-appear: appear 1.2s ease-out 0.5s forwards;
+	--animate-border-beam: border-beam calc(var(--duration) * 1s) infinite linear;
+	--animate-meteor: meteor 5s linear infinite;
+	@keyframes meteor {
+		0% {
+			transform: rotate(215deg) translateX(0);
+			opacity: 1;
+		}
+		70% {
+			opacity: 1;
+		}
+		100% {
+			transform: rotate(215deg) translateX(-500px);
+			opacity: 0;
+		}
+	}
+
+	@keyframes border-beam {
+		100% {
+			offset-distance: 100%;
+		}
+	}
+
+	/* Keyframes for aurora-border animation */
+	@keyframes aurora-border {
+		0%,
+		100% {
+			border-radius: 37% 29% 27% 27% / 28% 25% 41% 37%;
+		}
+		25% {
+			border-radius: 47% 29% 39% 49% / 61% 19% 66% 26%;
+		}
+		50% {
+			border-radius: 57% 23% 47% 72% / 63% 17% 66% 33%;
+		}
+		75% {
+			border-radius: 28% 49% 29% 100% / 93% 20% 64% 25%;
+		}
+	}
+
+	/* Keyframes for aurora-1 animation */
+	@keyframes aurora-1 {
+		0%,
+		100% {
+			top: 0;
+			right: 0;
+		}
+		50% {
+			top: 50%;
+			right: 25%;
+		}
+		75% {
+			top: 25%;
+			right: 50%;
+		}
+	}
+
+	/* Keyframes for aurora-2 animation */
+	@keyframes aurora-2 {
+		0%,
+		100% {
+			top: 0;
+			left: 0;
+		}
+		60% {
+			top: 75%;
+			left: 25%;
+		}
+		85% {
+			top: 50%;
+			left: 50%;
+		}
+	}
+
+	/* Keyframes for aurora-3 animation */
+	@keyframes aurora-3 {
+		0%,
+		100% {
+			bottom: 0;
+			left: 0;
+		}
+		40% {
+			bottom: 50%;
+			left: 25%;
+		}
+		65% {
+			bottom: 25%;
+			left: 50%;
+		}
+	}
+
+	/* Keyframes for aurora-4 animation */
+	@keyframes aurora-4 {
+		0%,
+		100% {
+			bottom: 0;
+			right: 0;
+		}
+		50% {
+			bottom: 25%;
+			right: 40%;
+		}
+		90% {
+			bottom: 50%;
+			right: 25%;
+		}
+	}
+	@keyframes background-move {
+		0%,
+		100% {
+			background-position: 0% 50%;
+		}
+
+		50% {
+			background-position: 100% 50%;
+		}
+	}
+	@keyframes fade-in {
+		from {
+			opacity: 0;
+			transform: translateY(-10px);
+		}
+		to {
+			opacity: 1;
+			transform: none;
+		}
+	}
+	@keyframes moveUp {
+		from {
+			transform: translateY(20px);
+			opacity: 0;
+		}
+		to {
+			transform: translateY(0);
+			opacity: 1;
+		}
+	}
+
+	@keyframes appear {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
 }
 
+@utility container {
+	margin-inline: auto;
+	padding-inline: 2rem;
+}
+@utility bg-grid {
+	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke-opacity='0.03' stroke='white'%3E%3Cpath d='M0 .5H31.5V32'/%3E%3C/svg%3E");
+	background-size: 32px 32px;
+}
+@utility bg-grid-dark {
+	background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32' width='32' height='32' fill='none' stroke-opacity='0.03' stroke='black'%3E%3Cpath d='M0 .5H31.5V32'/%3E%3C/svg%3E");
+	background-size: 32px 32px;
+}
 @layer base {
 	* {
 		@apply border-border outline-ring/50 box-border;

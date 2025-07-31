@@ -34,12 +34,12 @@
 </script>
 
 <section class="mx-auto flex min-h-svh max-w-screen-md items-center justify-center">
-	<Card.Root class="w-full max-w-sm">
+	<Card.Root class="w-full max-w-sm bg-transparent backdrop-blur-sm ">
 		<Card.Header>
 			<Card.Title>Login to your account</Card.Title>
 			<Card.Description>Enter your email below to login to your account</Card.Description>
 			<Card.Action>
-				<Button variant="link">Sign Up</Button>
+				<Button variant="link" href="/signup">Sign Up</Button>
 			</Card.Action>
 		</Card.Header>
 
@@ -83,10 +83,13 @@
 											variant="ghost"
 											size="icon"
 											onclick={togglePassword}
+											aria-pressed={show}
+											aria-label={show ? 'Hide Password' : 'Show Password'}
+											aria-controls="password"
 											>{#if show}
-												<Eye />
+												<Eye aria-hidden="true" />
 											{:else}
-												<EyeClosed />
+												<EyeClosed aria-hidden="true" />
 											{/if}
 										</Button>
 									</div>
