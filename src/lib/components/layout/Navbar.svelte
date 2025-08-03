@@ -5,6 +5,9 @@
 	import GradintButton from '$lib/components/layout/GradintButton.svelte';
 	import { inview, type Options } from 'svelte-inview';
 
+	import { lenis, easeInOutCubic } from '$lib/lenis';
+	import { onDestroy } from 'svelte';
+
 	let { user } = $props();
 	let animate = $state(false);
 	const options: Options = {
@@ -15,9 +18,35 @@
 	function toggleMobileMenu() {
 		mobileMenuOpen = !mobileMenuOpen;
 	}
-	//
+
+	function scrollToHash(e: MouseEvent) {
+		e.preventDefault();
+		if (!lenis) {
+			return;
+		}
+
+		const target = (e.currentTarget as HTMLAnchorElement).hash;
+		if (!target) return;
+
+		const el = document.querySelector<HTMLElement>(target);
+		if (el) {
+			lenis.scrollTo(el, { duration: 2, easing: easeInOutCubic });
+		}
+	}
+	onDestroy(() => {
+		if (lenis) lenis.destroy();
+	});
+	let scrollY = $state(0);
+	let lastScrollY = $state(0);
+	let shy = $state(false);
+	const handleScroll = () => {
+		const scrollingDown = lastScrollY < scrollY;
+		shy = scrollingDown && scrollY > 200;
+		lastScrollY = scrollY;
+	};
 </script>
 
+<svelte:window bind:scrollY onscroll={handleScroll} />
 <header
 	use:inview={options}
 	oninview_change={({ detail }) => {
@@ -25,6 +54,7 @@
 	}}
 >
 	<nav
+		class:nav-slide={shy}
 		aria-label="Primary navigation"
 		class={[
 			animate ? 'animate-in slide-in-from-top-55 delay-200 duration-1000' : '',
@@ -42,9 +72,12 @@
 			<ul class="hidden items-center space-x-8 md:flex">
 				<li>
 					<a
-						href="/collections"
+						href="#pricing"
+						onclick={(e) => {
+							scrollToHash(e);
+						}}
 						class="hover:text-primary text-secondary-foreground transition-colors duration-300"
-						>Collections</a
+						>Pricing</a
 					>
 				</li>
 				<li>
@@ -192,3 +225,17 @@
 		</div>
 	{/if}
 </header>
+
+<style>
+	.nav-slide {
+		transition: transform 0.5s ease-in-out;
+		transform: translateY(-200%);
+	}
+
+	@media (max-width: 768px) {
+		.nav-slide {
+			transition: transform 0.5s ease-in-out;
+			transform: translateY(-200%);
+		}
+	}
+</style>

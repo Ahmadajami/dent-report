@@ -3,7 +3,7 @@
 	import { Toaster } from '$lib/components/ui/sonner';
 	import { ModeWatcher } from 'mode-watcher';
 	import '../app.css';
-	import type { Snippet } from 'svelte';
+	import { type Snippet } from 'svelte';
 	import type { LayoutData } from './$types';
 	import { onNavigate } from '$app/navigation';
 
@@ -18,6 +18,8 @@
 			});
 		});
 	});
+
+	//lenis.scrollTo(target, { duration: 2 })
 </script>
 
 <ModeWatcher />
