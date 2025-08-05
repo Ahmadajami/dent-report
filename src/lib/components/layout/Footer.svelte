@@ -38,8 +38,8 @@
 <footer class="w-full py-14">
 	<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
 		<div class="mx-auto max-w-3xl">
-			<a href={hrefs.home} class="flex justify-center">
-				<Logo className="text-7xl" />
+			<a href={hrefs.home} class="flex justify-center" dir="ltr">
+				<Logo className="text-5xl md:text-7xl text-wrap " />
 			</a>
 
 			<ul

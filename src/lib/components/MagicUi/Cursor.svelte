@@ -2,6 +2,7 @@
 	import { onMount } from 'svelte';
 	import { Spring } from 'svelte/motion';
 	import { mode } from 'mode-watcher';
+	let isMobile = $derived.by(() => /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent));
 
 	interface SpringConfig {
 		damping?: number;
@@ -67,37 +68,38 @@
 </script>
 
 <svelte:window
-	onmousemove={handleMouseMove}
-	onmouseleave={handleMouseLeave}
-	onmouseover={handleMouseOver}
-	onmouseout={handleMouseOut}
+	onmousemove={!isMobile ? handleMouseMove : undefined}
+	onmouseleave={!isMobile ? handleMouseLeave : undefined}
+	onmouseover={!isMobile ? handleMouseOver : undefined}
+	onmouseout={!isMobile ? handleMouseOut : undefined}
 />
+{#if !isMobile}
+	<div
+		class="cursor"
+		style="transform: translate(calc({cursorX.current}px - 50%), calc({cursorY.current}px - 50%)) scale({scale});"
+	>
+		<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
+			<rect fill="transparent" width="100%" height="100%" />
 
-<div
-	class="cursor"
-	style="transform: translate(calc({cursorX.current}px - 50%), calc({cursorY.current}px - 50%)) scale({scale});"
->
-	<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
-		<rect fill="transparent" width="100%" height="100%" />
+			<defs>
+				<filter id="f1" x="0" y="0" xmlns="http://www.w3.org/2000/svg">
+					<feGaussianBlur in="SourceGraphic" stdDeviation="1" />
+				</filter>
+			</defs>
 
-		<defs>
-			<filter id="f1" x="0" y="0" xmlns="http://www.w3.org/2000/svg">
-				<feGaussianBlur in="SourceGraphic" stdDeviation="1" />
-			</filter>
-		</defs>
-
-		<!-- Transparent circle with black stroke -->
-		<circle cx="12" cy="12" r="9" fill="transparent" stroke-width="2" {stroke} />
-		<circle
-			cx="12"
-			cy="12"
-			r="8"
-			fill={isHovering ? 'white' : 'transparent'}
-			opacity={isHovering ? '0.5' : '1'}
-			filter="url(#f1)"
-		/>
-	</svg>
-</div>
+			<!-- Transparent circle with black stroke -->
+			<circle cx="12" cy="12" r="9" fill="transparent" stroke-width="2" {stroke} />
+			<circle
+				cx="12"
+				cy="12"
+				r="8"
+				fill={isHovering ? 'white' : 'transparent'}
+				opacity={isHovering ? '0.5' : '1'}
+				filter="url(#f1)"
+			/>
+		</svg>
+	</div>
+{/if}
 
 <style>
 	:global(.cursor) {
