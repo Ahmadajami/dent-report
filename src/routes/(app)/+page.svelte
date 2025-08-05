@@ -1,14 +1,15 @@
 <script lang="ts">
-	import type { PageData } from './$types';
+	//import type { PageData } from './$types';
 	import AuroraText from '$lib/components/MagicUi/AuroraText.svelte';
 	import AnimatedButton from '$lib/components/MagicUi/AnimatedButton.svelte';
-	import AniamteView from '$lib/components/MagicUi/ClaudeVersion.svelte';
+	import AniamteView from '$lib/components/MagicUi/AniamteView.svelte';
 	import BorderBeam from '$lib/components/MagicUi/BorderBeam.svelte';
-	import type { Options } from 'svelte-inview';
 	import Proplems from '$lib/components/Proplems/Proplems.svelte';
 	import Pricing from '$lib/components/Pricing/Pricing.svelte';
+	import Faq from '$lib/components/Faq/Faq.svelte';
+	import { m } from '$lib/paraglide/messages';
 
-	let { data }: { data: PageData } = $props();
+	//let { data }: { data: PageData } = $props();
 </script>
 
 <svelte:head>
@@ -29,21 +30,23 @@
 			>
 				<h1
 					id="hero-heading"
-					class="text-center text-4xl font-bold tracking-wide md:text-left md:text-5xl lg:text-7xl"
+					class="text-center text-4xl font-bold tracking-wide md:text-left md:text-5xl lg:text-7xl rtl:md:text-right"
 				>
-					<AuroraText>Transform Your Clinic</AuroraText>
+					<AuroraText>{m.hero_one()}</AuroraText>
 					<br />
-					Drive <AuroraText>Success</AuroraText> with Essential Patient Reports
+					{m.fresh_left_buzzard_win()}
+					<AuroraText>{m.least_dull_angelfish_tear()}</AuroraText>
+					{m.ago_main_piranha_boost()}
 				</h1>
 
 				<p
-					class="text-muted-foreground mt-4 max-w-prose text-center text-base md:text-left md:text-lg"
+					class="text-muted-foreground mt-4 max-w-prose text-center text-base md:text-left md:text-lg rtl:md:text-right"
 				>
-					Empower your healthcare practice with streamlined reporting tools and real-time insights.
+					{m.fluffy_big_dingo_stir()}
 				</p>
 
 				<div class="mt-8">
-					<AnimatedButton text="Let's Start" />
+					<AnimatedButton text={m.few_patchy_turkey_glow()} />
 				</div>
 			</article>
 
@@ -53,7 +56,7 @@
 				aria-label="Application dashboard preview"
 			>
 				<div
-					class="relative mx-2 my-2 h-full w-full md:absolute md:-right-60 md:mx-0 md:block md:h-full md:w-[60vw] md:border md:drop-shadow-2xl"
+					class="relative mx-2 my-2 h-full w-full md:absolute md:-right-60 md:mx-0 md:block md:h-full md:w-[60vw] md:border md:drop-shadow-2xl rtl:md:drop-shadow-xl"
 				>
 					<BorderBeam size={150} duration={5} />
 
@@ -74,10 +77,10 @@
 	</div>
 </AniamteView>
 
-<section aria-labelledby="problem-solution-heading" class="my-32">
+<section id="features" aria-labelledby="problem-solution-heading" class="my-32">
 	<header class="container mx-auto">
 		<h2 id="problem-solution-heading" class="mb-6 text-center text-4xl font-semibold md:text-7xl">
-			<AuroraText className="text-center">Simplify Patient Management & Reporting</AuroraText>
+			<AuroraText className="text-center">{m.proplems_header()}</AuroraText>
 		</h2>
 	</header>
 
@@ -85,3 +88,5 @@
 </section>
 
 <Pricing />
+
+<Faq />

@@ -3,17 +3,28 @@
 	import Menu from '@lucide/svelte/icons/menu';
 	import Themetoggle from '$lib/components/layout/Themetoggle.svelte';
 	import GradintButton from '$lib/components/layout/GradintButton.svelte';
-	import { inview, type Options } from 'svelte-inview';
-
 	import { lenis, easeInOutCubic } from '$lib/lenis';
 	import { onDestroy } from 'svelte';
+	import { cn } from '$lib/utils';
+	import Logo from '$lib/components/layout/Logo.svelte';
+	import { shy } from './shy.svelte';
+	import { page } from '$app/state';
+	import { enhance } from '$app/forms';
+	import Langugetoggle from './Langugetoggle.svelte';
+	import { m } from '$lib/paraglide/messages';
 
-	let { user } = $props();
-	let animate = $state(false);
-	const options: Options = {
-		unobserveOnEnter: true
-	};
 	let mobileMenuOpen = $state(false);
+
+	const hrefs = {
+		home: '/',
+		features: '#features',
+		pricing: '#pricing',
+		faq: '#Faq',
+		about: '/about',
+		contact: '#contact',
+		login: '/login',
+		signup: '/signup'
+	};
 
 	function toggleMobileMenu() {
 		mobileMenuOpen = !mobileMenuOpen;
@@ -21,9 +32,7 @@
 
 	function scrollToHash(e: MouseEvent) {
 		e.preventDefault();
-		if (!lenis) {
-			return;
-		}
+		if (!lenis) return;
 
 		const target = (e.currentTarget as HTMLAnchorElement).hash;
 		if (!target) return;
@@ -31,108 +40,95 @@
 		const el = document.querySelector<HTMLElement>(target);
 		if (el) {
 			lenis.scrollTo(el, { duration: 2, easing: easeInOutCubic });
+			shy.value = true;
 		}
 	}
+
 	onDestroy(() => {
 		if (lenis) lenis.destroy();
 	});
+
 	let scrollY = $state(0);
 	let lastScrollY = $state(0);
-	let shy = $state(false);
+
 	const handleScroll = () => {
 		const scrollingDown = lastScrollY < scrollY;
-		shy = scrollingDown && scrollY > 200;
+		shy.value = scrollingDown && scrollY > 200;
 		lastScrollY = scrollY;
 	};
 </script>
 
-<svelte:window bind:scrollY onscroll={handleScroll} />
-<header
-	use:inview={options}
-	oninview_change={({ detail }) => {
-		animate = detail.inView;
-	}}
->
+<svelte:window bind:scrollY on:scroll={handleScroll} />
+
+<header>
 	<nav
-		class:nav-slide={shy}
+		class:nav-slide={shy.value}
+		class={cn(
+			'fixed top-0 left-0 z-50 h-18 w-full bg-transparent px-4 backdrop-blur-sm md:px-12',
+			'animate-in slide-in-from-top-55 duration-1000'
+		)}
 		aria-label="Primary navigation"
-		class={[
-			animate ? 'animate-in slide-in-from-top-55 delay-200 duration-1000' : '',
-			'fixed top-0 left-0 z-50 h-18 w-full bg-transparent px-6 backdrop-blur-sm md:px-12'
-		]}
 	>
 		<div class="mx-auto flex h-full max-w-7xl items-center justify-between">
-			<div class="flex items-center font-serif text-2xl font-bold tracking-widest">
-				<a href="/" aria-label="Homepage"
-					><span>Useful</span><span class="text-primary">Report</span></a
-				>
-			</div>
+			<!-- Left: Logo -->
+			<a href={hrefs.home} class="flex items-center font-serif text-2xl font-bold tracking-widest">
+				<Logo />
+			</a>
 
-			<!-- Desktop Navigation -->
-			<ul class="hidden items-center space-x-8 md:flex">
+			<!-- Center: Navigation (Desktop) -->
+			<ul class="text-secondary-foreground hidden gap-8 font-medium md:flex">
 				<li>
-					<a
-						href="#pricing"
-						onclick={(e) => {
-							scrollToHash(e);
-						}}
-						class="hover:text-primary text-secondary-foreground transition-colors duration-300"
-						>Pricing</a
+					<a href={hrefs.features} onclick={scrollToHash} class="hover:text-primary transition"
+						>{m.features_nav()}</a
 					>
 				</li>
 				<li>
-					<a
-						href="/showrooms"
-						class="hover:text-primary text-secondary-foreground transition-colors duration-300"
-						>Showrooms</a
+					<a href={hrefs.pricing} onclick={scrollToHash} class="hover:text-primary transition"
+						>{m.pricing_nav()}</a
 					>
 				</li>
 				<li>
-					<a
-						href="/about"
-						class="hover:text-primary text-secondary-foreground transition-colors duration-300"
-						>About</a
+					<a href={hrefs.faq} onclick={scrollToHash} class="hover:text-primary transition"
+						>{m.faq_nav()}</a
 					>
 				</li>
-				<li>
-					<a
-						href="/contact"
-						class="hover:text-primary text-secondary-foreground transition-colors duration-300"
-						>Contact</a
-					>
-				</li>
+				<li><a href={hrefs.about} class="hover:text-primary transition">{m.about_nav()}</a></li>
+				<li><a href={hrefs.contact} class="hover:text-primary transition">{m.contact_nav()}</a></li>
 			</ul>
 
+			<!-- Right: Buttons and Toggles -->
 			<div class="flex items-center space-x-4">
-				{#if user}
-					<Button
-						class="hover:text-primary text-secondary-foreground hidden p-2 font-serif text-2xl transition-colors md:flex"
+				{#if !page.data.user}
+					<a
+						href={hrefs.login}
+						class="hover:text-primary text-secondary-foreground hidden transition md:block"
+						>{m.log_in()}</a
 					>
-						Login
-					</Button>
+					<GradintButton href={hrefs.signup} classname="hidden md:flex" />
 					<Themetoggle />
+					<Langugetoggle />
 					<Button
 						variant="ghost"
 						class="md:hidden"
 						onclick={toggleMobileMenu}
-						aria-label="Toggle mobile menu"
+						aria-label="Open menu"
 					>
 						<Menu />
 					</Button>
 				{:else}
-					<a
-						href="/login"
-						class="hover:text-primary text-secondary-foreground hidden transition-colors duration-300 md:flex"
+					<span class="text-muted-foreground hidden text-sm md:inline"
+						>Welcome {page.data.user.username}</span
 					>
-						Login
-					</a>
-					<GradintButton href="/signup" classname="hidden md:flex" />
+					<form action="/logout" method="POST" use:enhance>
+						<Button variant="ghost" type="submit" class="hover:text-primary">{m.log_out()}</Button>
+					</form>
+					<GradintButton href={hrefs.signup} classname="hidden md:flex" />
 					<Themetoggle />
 					<Button
 						variant="ghost"
 						class="md:hidden"
 						onclick={toggleMobileMenu}
-						aria-label="Toggle mobile menu"
+						aria-label="Open menu"
 					>
 						<Menu />
 					</Button>
@@ -146,13 +142,13 @@
 		<div
 			role="dialog"
 			aria-modal="true"
-			class="bg-background/95 animate-in fade-in-0 slide-in-from-bottom-full fixed inset-0 z-40 flex flex-col items-center justify-center space-y-6 backdrop-blur-sm duration-300 md:hidden"
+			class="bg-background/95 animate-in fade-in-0 slide-in-from-bottom-full fixed inset-0 z-40 flex flex-col items-center justify-center space-y-6 backdrop-blur-sm md:hidden"
 		>
 			<Button
 				variant="ghost"
 				class="text-secondary-foreground hover:text-primary absolute top-4 right-4"
 				onclick={toggleMobileMenu}
-				aria-label="Close mobile menu"
+				aria-label="Close menu"
 			>
 				<svg
 					xmlns="http://www.w3.org/2000/svg"
@@ -169,58 +165,51 @@
 				</svg>
 			</Button>
 
-			<ul class="space-y-6 text-xl">
+			<ul class="space-y-4 text-xl font-medium">
 				<li>
-					<a
-						href="/collections"
-						onclick={toggleMobileMenu}
-						class="hover:text-primary text-secondary-foreground transition-colors duration-300"
-						>Collections</a
+					<a href={hrefs.features} onclick={toggleMobileMenu} class="hover:text-primary transition"
+						>{m.features_nav()}</a
 					>
 				</li>
 				<li>
-					<a
-						href="/showrooms"
-						onclick={toggleMobileMenu}
-						class="hover:text-primary text-secondary-foreground transition-colors duration-300"
-						>Showrooms</a
+					<a href={hrefs.pricing} onclick={toggleMobileMenu} class="hover:text-primary transition"
+						>{m.pricing_nav()}</a
 					>
 				</li>
 				<li>
-					<a
-						href="/about"
-						onclick={toggleMobileMenu}
-						class="hover:text-primary text-secondary-foreground transition-colors duration-300"
-						>About</a
+					<a href={hrefs.faq} onclick={toggleMobileMenu} class="hover:text-primary transition"
+						>{m.faq_nav()}</a
 					>
 				</li>
 				<li>
-					<a
-						href="/contact"
-						onclick={toggleMobileMenu}
-						class="hover:text-primary text-secondary-foreground transition-colors duration-300"
-						>Contact</a
+					<a href={hrefs.about} onclick={toggleMobileMenu} class="hover:text-primary transition"
+						>{m.about_nav()}</a
+					>
+				</li>
+				<li>
+					<a href={hrefs.contact} onclick={toggleMobileMenu} class="hover:text-primary transition"
+						>{m.contact_nav()}</a
 					>
 				</li>
 			</ul>
 
-			<div class="flex flex-col items-center space-y-4 pt-4">
-				{#if user}
-					<Button
-						class="hover:text-primary text-secondary-foreground p-2 font-serif text-2xl transition-colors"
-						onclick={toggleMobileMenu}
-					>
-						Login
-					</Button>
-				{:else}
+			<div class="flex flex-col space-y-4 pt-6">
+				{#if !page.data.user}
 					<a
-						href="/login"
+						href={hrefs.login}
 						onclick={toggleMobileMenu}
-						class="hover:text-primary text-secondary-foreground transition-colors duration-300"
-						>Login</a
+						class="hover:text-primary text-lg transition">{m.log_in()}</a
 					>
-					<GradintButton href="/signup">Free Trial</GradintButton>
+					<GradintButton href={hrefs.signup}>{m.free_trail()}</GradintButton>
+				{:else}
+					<form action="/logout" method="POST" use:enhance>
+						<Button variant="ghost" type="submit" class="hover:text-primary text-lg"
+							>{m.log_out()}</Button
+						>
+					</form>
 				{/if}
+				<Themetoggle />
+				<Langugetoggle />
 			</div>
 		</div>
 	{/if}
@@ -228,14 +217,7 @@
 
 <style>
 	.nav-slide {
-		transition: transform 0.5s ease-in-out;
 		transform: translateY(-200%);
-	}
-
-	@media (max-width: 768px) {
-		.nav-slide {
-			transition: transform 0.5s ease-in-out;
-			transform: translateY(-200%);
-		}
+		transition: transform 0.5s ease-in-out;
 	}
 </style>

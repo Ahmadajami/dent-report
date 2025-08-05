@@ -1,4 +1,18 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "Hello, {name} from en!"
+	"features_nav": "Features",
+	"pricing_nav": "Pricing",
+	"faq_nav": "FAQs",
+	"about_nav": "About",
+	"contact_nav": "Contact",
+	"log_out": "Log out",
+	"log_in": "Login",
+	"free_trail": "Free Trial",
+	"hero_one": "Transform Your Clinic",
+	"fresh_left_buzzard_win": "Drive",
+	"least_dull_angelfish_tear": "Success",
+	"ago_main_piranha_boost": "with Essential Patient Reports",
+	"fluffy_big_dingo_stir": "Empower your healthcare practice with streamlined reporting tools and real-time insights.",
+	"few_patchy_turkey_glow": "Let's Start",
+	"proplems_header": "Simplify Patient Management & Reporting"
 }

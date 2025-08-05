@@ -6,6 +6,8 @@
 	import { type Snippet } from 'svelte';
 	import type { LayoutData } from './$types';
 	import { onNavigate } from '$app/navigation';
+	import Cursor from '$lib/components/MagicUi/Cursor.svelte';
+	import Footer from '$lib/components/layout/Footer.svelte';
 
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 	onNavigate((navigation) => {
@@ -22,12 +24,14 @@
 	//lenis.scrollTo(target, { duration: 2 })
 </script>
 
+<Cursor />
 <ModeWatcher />
 <Toaster richColors position="top-center" />
-<Navbar user={data.user} />
+<Navbar  />
 <main class="pt-18">
 	{@render children()}
 </main>
+<Footer />
 
 <style>
 	@keyframes fade-in {

@@ -1,4 +1,18 @@
 {
 	"$schema": "https://inlang.com/schema/inlang-message-format",
-	"hello_world": "مرحبا يا {name}"
+	"features_nav": "الميزات",
+	"pricing_nav": "الأسعار",
+	"faq_nav": "الأسئلة الشائعة",
+	"about_nav": "من نحن",
+	"contact_nav": "التواصل",
+	"log_out": "تسجيل الخروج",
+	"log_in": "تسجيل الدخول",
+	"free_trail": "نسخة تجريبية مجانية",
+	"hero_one": "حوّل عيادتك",
+	"fresh_left_buzzard_win": "يقود",
+	"least_dull_angelfish_tear": "نجاح",
+	"ago_main_piranha_boost": "مع تقارير المرضى الأساسية",
+	"fluffy_big_dingo_stir": "قم بتعزيز ممارسات الرعاية الصحية الخاصة بك باستخدام أدوات إعداد التقارير المبسطة والرؤى في الوقت الفعلي.",
+	"few_patchy_turkey_glow": "لنبدأ",
+	"proplems_header": "تبسيط إدارة المرضى وإعداد التقارير"
 }

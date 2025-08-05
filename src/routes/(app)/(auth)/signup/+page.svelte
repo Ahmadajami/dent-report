@@ -26,7 +26,9 @@
 	let confirmPasswordVisible = $state(false);
 	// Form setup
 	const form = superForm(data.form, {
-		validators: zod4Client(signupSchema)
+		validators: zod4Client(signupSchema),
+
+		taintedMessage: true
 	});
 
 	const { form: formData, enhance, delayed, message, validate } = form;
@@ -107,9 +109,9 @@
 										aria-controls="password"
 									>
 										{#if passwordVisible}
-											<Eye class="h-4 w-4"   aria-hidden="true"/>
+											<Eye class="h-4 w-4" aria-hidden="true" />
 										{:else}
-											<EyeClosed class="h-4 w-4"   aria-hidden="true"/>
+											<EyeClosed class="h-4 w-4" aria-hidden="true" />
 										{/if}
 									</Button>
 								</div>
@@ -142,9 +144,9 @@
 										aria-controls="password"
 									>
 										{#if confirmPasswordVisible}
-											<Eye class="h-4 w-4" aria-hidden="true"/>
+											<Eye class="h-4 w-4" aria-hidden="true" />
 										{:else}
-											<EyeClosed class="h-4 w-4"  aria-hidden="true"/>
+											<EyeClosed class="h-4 w-4" aria-hidden="true" />
 										{/if}
 									</Button>
 								</div>

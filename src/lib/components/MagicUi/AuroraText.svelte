@@ -16,7 +16,7 @@
 	}}
 	class:opacity-0={delayedInview}
 	class={cn(
-		'  relative inline-flex  overflow-hidden opacity-100  transition-opacity duration-500 ease-in starting:opacity-0',
+		' relative inline-flex overflow-hidden  opacity-100 transition-opacity  duration-500 ease-in  rtl:py-3 starting:opacity-0',
 		className
 	)}
 >
