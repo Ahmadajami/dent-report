@@ -1,7 +1,8 @@
 <script lang="ts">
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import { buttonVariants } from '$lib/components/ui/button/index.js';
-	import { setLocale } from '$lib/paraglide/runtime';
+	import { getLocale, setLocale } from '$lib/paraglide/runtime';
+	let dir: 'rtl' | 'ltr' = $derived(getLocale() === 'ar' ? 'rtl' : 'ltr');
 </script>
 
 <DropdownMenu.Root>
@@ -10,7 +11,7 @@
 		<span class="rtl:hidden">En</span>
 		<span class="sr-only">Toggle Languges</span>
 	</DropdownMenu.Trigger>
-	<DropdownMenu.Content side="bottom" sideOffset={0}>
+	<DropdownMenu.Content side="bottom" {dir} preventScroll={false}>
 		<DropdownMenu.Item
 			onclick={() => {
 				setLocale('ar');

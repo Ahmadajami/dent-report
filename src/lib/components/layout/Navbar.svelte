@@ -71,7 +71,11 @@
 	>
 		<div class="mx-auto flex h-full max-w-7xl items-center justify-between">
 			<!-- Left: Logo -->
-			<a href={hrefs.home} class="flex items-center font-serif text-2xl font-bold tracking-widest">
+			<a
+				dir="ltr"
+				href={hrefs.home}
+				class="flex items-center font-serif text-2xl font-bold tracking-widest"
+			>
 				<Logo />
 			</a>
 
