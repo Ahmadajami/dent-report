@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Navbar from '$lib/components/layout/Navbar.svelte';
 	import { Toaster } from '$lib/components/ui/sonner';
 	import { ModeWatcher } from 'mode-watcher';
 	import '../app.css';
@@ -7,7 +6,6 @@
 	import type { LayoutData } from './$types';
 	import { onNavigate } from '$app/navigation';
 	import Cursor from '$lib/components/MagicUi/Cursor.svelte';
-	import Footer from '$lib/components/layout/Footer.svelte';
 
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 	onNavigate((navigation) => {
@@ -27,11 +25,8 @@
 <Cursor />
 <ModeWatcher />
 <Toaster richColors position="top-center" />
-<Navbar  />
-<main class="pt-18">
-	{@render children()}
-</main>
-<Footer />
+
+{@render children()}
 
 <style>
 	@keyframes fade-in {

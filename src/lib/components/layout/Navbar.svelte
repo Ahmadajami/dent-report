@@ -12,18 +12,19 @@
 	import { enhance } from '$app/forms';
 	import Langugetoggle from './Langugetoggle.svelte';
 	import { m } from '$lib/paraglide/messages';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	let mobileMenuOpen = $state(false);
 
 	const hrefs = {
-		home: '/',
-		features: '#features',
-		pricing: '#pricing',
-		faq: '#Faq',
-		about: '/about',
-		contact: '#contact',
-		login: '/login',
-		signup: '/signup'
+		home: localizeHref('/'),
+		features: localizeHref('#features'),
+		pricing: localizeHref('#pricing'),
+		faq: localizeHref('#faq'),
+		about: localizeHref('/about'),
+		contact: localizeHref('#contact'),
+		login: localizeHref('/login'),
+		signup: localizeHref('/signup')
 	};
 
 	function toggleMobileMenu() {

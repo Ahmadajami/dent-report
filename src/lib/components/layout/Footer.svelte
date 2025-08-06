@@ -5,16 +5,18 @@
 	import { shy } from './shy.svelte';
 
 	import { Facebook, Instagram, X } from '@lucide/svelte';
+	import { m } from '$lib/paraglide/messages';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	const hrefs = {
-		home: '/',
-		features: '#features',
-		pricing: '#pricing',
-		faq: '#Faq',
-		about: '/about',
-		contact: '#contact',
-		login: '/login',
-		signup: '/signup'
+		home: localizeHref('/'),
+		features: localizeHref('#features'),
+		pricing: localizeHref('#pricing'),
+		faq: localizeHref('#faq'),
+		about: localizeHref('/about'),
+		contact: localizeHref('#contact'),
+		login: localizeHref('/login'),
+		signup: localizeHref('/signup')
 	};
 	function scrollToHash(e: MouseEvent) {
 		e.preventDefault();
@@ -43,58 +45,55 @@
 			</a>
 
 			<ul
-				class="mb-10 flex flex-col items-center justify-center gap-7 border-b border-gray-200 py-16 text-lg transition-all duration-500 md:flex-row md:gap-12"
+				class="mb-10 flex flex-col items-center justify-center gap-7 border-b border-gray-200 py-16 text-lg text-nowrap transition-all duration-500 md:flex-row md:gap-12"
 			>
 				<li>
 					<a onclick={(e) => scrollToHash(e)} href={hrefs.features} class=" hover:text-primary"
-						>Features</a
+						>{m.features_nav()}</a
 					>
 				</li>
 				<li>
 					<a onclick={(e) => scrollToHash(e)} href={hrefs.pricing} class=" hover:text-primary"
-						>Pricing</a
+						>{m.pricing_nav()}</a
 					>
 				</li>
 				<li>
-					<a onclick={(e) => scrollToHash(e)} href={hrefs.faq} class=" hover:text-primary">FAQ</a>
+					<a onclick={(e) => scrollToHash(e)} href={hrefs.faq} class=" hover:text-primary"
+						>{m.faq_nav()}</a
+					>
 				</li>
 				<li>
 					<a onclick={(e) => scrollToHash(e)} href={hrefs.about} class=" hover:text-primary"
-						>About</a
+						>{m.about_nav()}</a
 					>
 				</li>
 				<li>
 					<a onclick={(e) => scrollToHash(e)} href={hrefs.contact} class=" hover:text-primary"
-						>Contact</a
+						>{m.contact_nav()}</a
 					>
 				</li>
 				<li>
-					<a href={hrefs.login} class=" hover:text-primary">Login</a>
+					<a href={hrefs.login} class=" hover:text-primary">{m.log_in()}</a>
 				</li>
 				<li>
-					<a href={hrefs.signup} class=" hover:text-primary">Sign Up</a>
+					<a href={hrefs.signup} class=" hover:text-primary">{m.sign_up()}</a>
 				</li>
 			</ul>
 
 			<div class="mb-14 flex items-center justify-center space-x-10">
-				<!-- TODO: Replace # with actual social media links -->
-				<a href="/" class="hover:text-primary block transition-all duration-500">
+				<a href="#" class="hover:text-primary block transition-all duration-500">
 					<Facebook />
 				</a>
-				<a href="/" class="hover:text-primary block transition-all duration-500">
-					<!-- SVG: Instagram or similar -->
-					<!-- ...SVG CODE... -->
+				<a href="#" class="hover:text-primary block transition-all duration-500">
 					<Instagram />
 				</a>
-				<a href="/" class="hover:text-primary block transition-all duration-500">
-					<!-- SVG: Facebook -->
-					<!-- ...SVG CODE... -->
+				<a href="#" class="hover:text-primary block transition-all duration-500">
 					<X class="h-full w-full" />
 				</a>
 			</div>
 
 			<span class="block text-center text-lg text-gray-500"
-				>© {new Date().getFullYear()}, All rights reserved.</span
+				>© {new Date().getFullYear()}, {m.footer()}</span
 			>
 		</div>
 	</div>

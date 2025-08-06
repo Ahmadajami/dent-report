@@ -6,76 +6,176 @@
 	import { fly } from 'svelte/transition';
 	import SparklesText from '$lib/components/MagicUi/SparklesText.svelte';
 	import BlureFade from '../MagicUi/BlureFade.svelte';
+	import { m } from '$lib/paraglide/messages';
 
-	type Interval = 'month' | 'year';
+	let { isArabic = $bindable() }: { isArabic: boolean } = $props();
+	const month: string = m.month();
+	const year: string = m.year();
+	
+	
 
-	export function toHumanPrice(price: number, decimals: number = 2) {
-		return Number(price / 100).toFixed(decimals);
+	function toHumanPrice(price: number, decimals: number = 2) {
+		if (typeof price !== 'number' || isNaN(price)) {
+			console.error('Invalid price input. Expected a number.');
+			return 'N/A'; // Or throw an error, depending on desired error handling
+		}
+		// Now directly formats the number without division, as prices are in whole dollars.
+		return Number(price).toFixed(decimals);
 	}
-	let productPrices = [
+	const productPrices_ar = [
 		{
-			id: 'price_1',
-			name: 'Basic',
-			description: 'A basic plan for startups and individual users',
+			id: 'price_dental_1',
+			name: 'الخطة الأولية',
+			description:
+				'مثالية للممارسين الفرديين والعيادات الصغيرة لطب الأسنان أو العيون التي تبدأ بالإدارة الرقمية.',
 			features: [
-				'AI-powered analytics',
-				'Basic support',
-				'5 projects limit',
-				'Access to basic AI tools'
+				'إدارة ملفات المرضى الأساسية (حتى 200 مريض)',
+				'جدولة المواعيد القياسية',
+				'إنشاء تقارير المرضى الأساسية (5 تقارير/شهر)',
+				'تخزين آمن للبيانات',
+				'دعم عبر البريد الإلكتروني',
+				'دعم أساسي عبر واتساب'
 			],
-			monthlyPrice: 1000,
-			yearlyPrice: 10000,
+			monthlyPrice: 5,
+			yearlyPrice: 50,
 			isMostPopular: false
 		},
 		{
-			id: 'price_2',
-			name: 'Premium',
-			description: 'A premium plan for growing businesses',
+			id: 'price_dental_2',
+			name: 'الخطة الاحترافية',
+			description:
+				'مثالية للعيادات المتنامية لطب الأسنان والعيون التي تحتاج إلى ميزات أكثر قوة وسعة أكبر للمرضى.',
 			features: [
-				'Advanced AI insights',
-				'Priority support',
-				'Unlimited projects',
-				'Access to all AI tools',
-				'Custom integrations'
+				'إدارة غير محدودة لملفات المرضى',
+				'إدارة المواعيد المتقدمة (مع تذكيرات تلقائية)',
+				'إنشاء تقارير مرضى غير محدودة (مع قوالب قابلة للتخصيص)',
+				'رؤى تقارير مدعومة بالذكاء الاصطناعي',
+				'تكامل التطبيب عن بعد',
+				'دعم ذو أولوية عبر البريد الإلكتروني والدردشة',
+				'دعم واتساب ذو أولوية',
+				'حتى 5 مستخدمين من الموظفين'
 			],
-			monthlyPrice: 2000,
-			yearlyPrice: 20000,
+			monthlyPrice: 29,
+			yearlyPrice: 290,
 			isMostPopular: true
 		},
 		{
-			id: 'price_5',
-			name: 'Enterprise',
-			description: 'An enterprise plan with advanced features for large organizations',
+			id: 'price_dental_3',
+			name: 'خطة العيادة الاحترافية',
+			description: 'مصممة لعيادات طب الأسنان والعيون متعددة الممارسين التي تتطلب أدوات شاملة.',
 			features: [
-				'Custom AI solutions',
-				'24/7 dedicated support',
-				'Unlimited projects',
-				'Access to all AI tools',
-				'Custom integrations',
-				'Data security and compliance'
+				'جميع ميزات الخطة الاحترافية',
+				'تكامل نظام السجلات الصحية الإلكترونية (EHR/EMR)',
+				'لوحات تحكم متقدمة للتحليلات والتقارير',
+				'بوابة المرضى عبر الإنترنت',
+				'مدير حساب مخصص',
+				'دعم عبر الهاتف والبريد الإلكتروني على مدار الساعة طوال أيام الأسبوع',
+				'دعم واتساب مخصص',
+				'حتى 15 مستخدمًا من الموظفين'
 			],
-			monthlyPrice: 5000,
-			yearlyPrice: 50000,
+			monthlyPrice: 79,
+			yearlyPrice: 790,
 			isMostPopular: false
 		},
 		{
-			id: 'price_6',
-			name: 'Ultimate',
-			description: 'The ultimate plan with all features for industry leaders',
+			id: 'price_dental_4',
+			name: 'خطة المؤسسات',
+			description:
+				'مصممة خصيصًا لمجموعات وسلاسل طب الأسنان والعيون الكبيرة ذات الاحتياجات المعقدة والمواقع المتعددة.',
 			features: [
-				'Bespoke AI development',
-				'White-glove support',
-				'Unlimited projects',
-				'Priority access to new AI tools',
-				'Custom integrations',
-				'Highest data security and compliance'
+				'جميع ميزات خطة العيادة الاحترافية',
+				'إدارة المواقع المتعددة',
+				'تكاملات مخصصة (على سبيل المثال، أنظمة الفواتير والمختبرات)',
+				'أمان وامتثال متقدم (جاهز لـ HIPAA و GDPR)',
+				'تدريب وتنفيذ في الموقع',
+				'فريق دعم فني مخصص',
+				'دعم واتساب مخصص على مدار الساعة طوال أيام الأسبوع',
+				'عدد غير محدود من مستخدمي الموظفين'
 			],
-			monthlyPrice: 8000,
-			yearlyPrice: 80000,
+			monthlyPrice: 199,
+			yearlyPrice: 1990,
 			isMostPopular: false
 		}
 	];
-	let interval: Interval = $state('month');
+	const productPrices_en = [
+		{
+			id: 'price_dental_1',
+			name: 'Starter',
+			description:
+				'Ideal for solo practitioners and small dental or optometry clinics getting started with digital management.',
+			features: [
+				'Basic Patient Profile Management (up to 200 patients)',
+				'Standard Appointment Scheduling',
+				'Essential Patient Report Generation (5 reports/month)',
+				'Secure Data Storage',
+				'Email Support',
+				'Basic WhatsApp Support'
+			],
+
+			monthlyPrice: 5,
+			yearlyPrice: 50,
+			isMostPopular: false
+		},
+		{
+			id: 'price_dental_2',
+			name: 'Professional',
+			description:
+				'Perfect for growing dental and optometry practices needing more robust features and higher patient capacity.',
+			features: [
+				'Unlimited Patient Profile Management',
+				'Advanced Appointment Management (with automated reminders)',
+				'Unlimited Patient Report Generation (with customizable templates)',
+				'AI-powered Report Insights',
+				'Telemedicine Integration',
+				'Priority Email & Chat Support',
+				'Priority WhatsApp Support',
+				'Up to 5 Staff Users'
+			],
+			monthlyPrice: 29,
+			yearlyPrice: 290,
+			isMostPopular: true
+		},
+		{
+			id: 'price_dental_3',
+			name: 'Clinic Pro',
+			description:
+				'Designed for multi-practitioner dental and optometry clinics requiring comprehensive tools.',
+			features: [
+				'All Professional Plan Features',
+				'EHR/EMR System Integration',
+				'Advanced Analytics & Reporting Dashboards',
+				'Online Patient Portal',
+				'Dedicated Account Manager',
+				'24/7 Phone & Email Support',
+				'Dedicated WhatsApp Support',
+				'Up to 15 Staff Users'
+			],
+			monthlyPrice: 79,
+			yearlyPrice: 790,
+			isMostPopular: false
+		},
+		{
+			id: 'price_dental_4',
+			name: 'Enterprise',
+			description:
+				'Tailored for large dental and optometry groups and chains with complex needs and multiple locations.',
+			features: [
+				'All Clinic Pro Plan Features',
+				'Multi-Location Management',
+				'Custom Integrations (e.g., billing, lab systems)',
+				'Advanced Security & Compliance (HIPAA, GDPR ready)',
+				'On-site Training & Implementation',
+				'Dedicated Technical Support Team',
+				'24/7 Dedicated WhatsApp Support',
+				'Unlimited Staff Users'
+			],
+			monthlyPrice: 199,
+			yearlyPrice: 1990,
+			isMostPopular: false
+		}
+	];
+	let productPrices = $derived(isArabic ? productPrices_ar : productPrices_en);
+	let interval = $state(month);
 	let isLoading = $state(false);
 	let index = $state('');
 	let onSubscribeClick = async (priceId: string) => {
@@ -97,31 +197,31 @@
 	<div class="mx-auto my-8 flex max-w-screen-xl flex-col gap-8 px-4 pt-4 md:px-8">
 		<div class="mx-auto max-w-5xl text-center">
 			<h2 class="text-5xl font-bold tracking-tight">
-				<SparklesText text={'Simple pricing for everyone.'} />
+				<SparklesText text={m.pricing_header()} />
 			</h2>
 
 			<p class="mt-6 text-xl leading-8">
-				Choose an
+				{m.pricing_one()}
 				{' '}
-				<strong>affordable plan</strong>
+				<strong>{m.pricing_second()}</strong>
 				{' '}
-				that&apos;s packed with the best features for engaging your audience, creating customer loyalty,
-				and driving sales.
+				{m.pricing_third()}
 			</p>
 		</div>
 
-		<div class="flex w-full items-center justify-center space-x-2">
+		<div class="flex w-full items-center justify-center space-x-2 rtl:mx-2 rtl:flex-row-reverse">
 			<Switch
+				dir="auto"
 				onclick={() => {
-					interval = interval === 'month' ? 'year' : 'month';
+					interval = interval === month ? year : month;
 				}}
 				id="interval"
 			/>
-			<span>Annual</span>
+			<span>{m.annual()}</span>
 			<span
-				class="inline-block rounded-full bg-black px-2.5 py-1 text-[11px] leading-5 font-semibold tracking-wide whitespace-nowrap text-white uppercase dark:bg-white dark:text-black"
+				class="inline-block rounded-full bg-black px-2.5 py-1 text-[11px] leading-5 font-semibold tracking-wide whitespace-nowrap text-white uppercase rtl:mx-2 dark:bg-white dark:text-black"
 			>
-				2 MONTHS FREE ✨
+				{m.months_free({ count: 2 })} ✨
 			</span>
 		</div>
 
@@ -151,9 +251,9 @@
 							<div in:fly={{ y: 20, duration: 300, delay: id * 40 }} class="flex flex-row gap-1">
 								<span class="text-4xl font-bold">
 									{#if interval === 'month'}
-										${toHumanPrice(price.monthlyPrice, 0)}
+										${toHumanPrice(price.monthlyPrice)}
 									{:else}
-										${toHumanPrice(price.yearlyPrice, 0)}
+										${toHumanPrice(price.yearlyPrice)}
 									{/if}
 									<span class="text-xs">
 										/ {interval}
@@ -175,9 +275,9 @@
 							/>
 							{#if isLoading && index === price.id}
 								<LoaderIcon class="mr-2 size-4 animate-spin" />
-								Subscribing
+								{m.subscribing()}
 							{:else if !isLoading || (isLoading && index !== price.id)}
-								Subscribe
+								{m.polite_round_haddock_empower()}
 							{/if}
 						</Button>
 
@@ -186,7 +286,7 @@
 						/>
 						{#if price.features && price.features.length > 0}
 							<ul class="flex flex-col gap-2 font-normal">
-								{#each price.features as feature, idx}
+								{#each price.features as feature}
 									<li class="flex items-center gap-3 text-xs font-medium">
 										<CheckIcon class="bg- size-5  shrink-0  rounded-full   p-[2px]" />
 										<span class="flex">{feature}</span>

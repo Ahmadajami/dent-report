@@ -5,8 +5,9 @@
 	import History from '@lucide/svelte/icons/history';
 
 	import Clipboard from '@lucide/svelte/icons/clipboard';
-	import { type Icon as IconType } from '@lucide/svelte';
+	import { ArrowLeft, ArrowRight, type Icon as IconType } from '@lucide/svelte';
 	import { cn } from '$lib/utils';
+	import { getLocale } from '$lib/paraglide/runtime';
 
 	interface TextItemProps {
 		title: string;
@@ -15,7 +16,7 @@
 		paragraph: string;
 		className?: string;
 	}
-	const problems: TextItemProps[] = [
+	const problems_en: TextItemProps[] = [
 		{
 			title: 'Manual Workload',
 			subtitle: 'Paper-based processes slow your operations.',
@@ -45,6 +46,39 @@
 				'Administrative duties like data entry and coordination drain staff resources, reducing the time available for actual patient care.'
 		}
 	];
+	const problems_ar: TextItemProps[] = [
+		{
+			title: 'العبء اليدوي',
+			subtitle: 'العمليات الورقية تبطئ عملياتك.',
+			icon: FileText,
+			paragraph:
+				'الاعتماد على حفظ السجلات اليدوي يؤدي إلى عدم الكفاءة، ويزيد من مخاطر الأخطاء، ويبطئ قدرتك على خدمة المرضى بفعالية.'
+		},
+		{
+			title: 'تقارير متأخرة',
+			subtitle: 'المرضى والموظفون ينتظرون أكثر مما ينبغي.',
+			icon: Clock,
+			paragraph:
+				'بدون الأتمتة، يصبح تسليم التقارير عنق الزجاجة، مما يؤدي إلى الإحباط، وتأخير قرارات الرعاية، والمتابعات غير الضرورية.'
+		},
+		{
+			title: 'تتبع غير فعال',
+			subtitle: 'صعوبة تتبع تاريخ المريض والزيارات.',
+			icon: History,
+			paragraph:
+				'عندما تكون سجلات المرضى مبعثرة أو غير مكتملة، يصبح من الصعب تتبع خطط العلاج، ومراقبة التقدم، أو تحديد احتياجات المتابعة.'
+		},
+		{
+			title: 'أعباء إدارية زائدة',
+			subtitle: 'الكثير من الوقت يقضى في المهام غير السريرية.',
+			icon: Clipboard,
+			paragraph:
+				'الواجبات الإدارية مثل إدخال البيانات والتنسيق تستنزف موارد الموظفين، مما يقلل الوقت المتاح للرعاية الفعلية للمرضى.'
+		}
+	];
+
+	let { isArabic = $bindable() }: { isArabic: boolean } = $props();
+	let problems = $derived(isArabic ? problems_ar : problems_en);
 </script>
 
 {#snippet textItem({ title, subtitle, icon, paragraph, className = '' }: TextItemProps)}
@@ -87,24 +121,11 @@
 			href="#contact"
 		>
 			<span>Let's Start</span>
-			<span class="icon">
-				<svg
-					width="24px"
-					height="24px"
-					viewBox="0 0 24 24"
-					stroke-width="1.5"
-					fill="none"
-					xmlns="http://www.w3.org/2000/svg"
-					color="currentColor"
-					><path
-						d="M3 12L21 12M21 12L12.5 3.5M21 12L12.5 20.5"
-						stroke="currentColor"
-						stroke-width="1.5"
-						stroke-linecap="round"
-						stroke-linejoin="round"
-					></path></svg
-				>
-			</span>
+			{#if isArabic}
+				<ArrowLeft />
+			{:else}
+				<ArrowRight />
+			{/if}
 		</a>
 	</div>
 {/snippet}

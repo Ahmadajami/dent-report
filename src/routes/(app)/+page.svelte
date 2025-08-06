@@ -8,8 +8,10 @@
 	import Pricing from '$lib/components/Pricing/Pricing.svelte';
 	import Faq from '$lib/components/Faq/Faq.svelte';
 	import { m } from '$lib/paraglide/messages';
+	import { getLocale } from '$lib/paraglide/runtime';
 
 	//let { data }: { data: PageData } = $props();
+	let isArabic = $derived(getLocale() === 'ar');
 </script>
 
 <svelte:head>
@@ -84,9 +86,9 @@
 		</h2>
 	</header>
 
-	<Proplems />
+	<Proplems bind:isArabic />
 </section>
 
-<Pricing />
+<Pricing bind:isArabic />
 
-<Faq />
+<Faq bind:isArabic />

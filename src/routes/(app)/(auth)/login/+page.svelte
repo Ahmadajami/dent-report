@@ -14,6 +14,8 @@
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import { authschema } from '$lib/auth/schema';
 	import { toast } from 'svelte-sonner';
+	import { m } from '$lib/paraglide/messages';
+	import { localizeHref } from '$lib/paraglide/runtime';
 
 	let { data }: PageProps = $props();
 
@@ -36,10 +38,10 @@
 <section class="mx-auto flex min-h-svh max-w-screen-md items-center justify-center">
 	<Card.Root class="w-full max-w-sm bg-transparent backdrop-blur-sm ">
 		<Card.Header>
-			<Card.Title>Login to your account</Card.Title>
-			<Card.Description>Enter your email below to login to your account</Card.Description>
+			<Card.Title>{m.vivid_wise_bullock_cheer()}</Card.Title>
+			<Card.Description>{m.email_desc()}</Card.Description>
 			<Card.Action>
-				<Button variant="link" href="/signup">Sign Up</Button>
+				<Button variant="link" href={localizeHref('/signup')}>{m.sign_up()}</Button>
 			</Card.Action>
 		</Card.Header>
 
@@ -50,7 +52,7 @@
 						<Form.Field {form} name="email">
 							<Form.Control>
 								{#snippet children({ props })}
-									<Form.Label for="email">Email</Form.Label>
+									<Form.Label for="email">{m.email_label()}</Form.Label>
 									<Input
 										type="email"
 										placeholder="m@example.com"
@@ -61,7 +63,7 @@
 									/>
 								{/snippet}
 							</Form.Control>
-							<Form.Description>This is your Email.</Form.Description>
+							<Form.Description>{m.email_field()}</Form.Description>
 							<Form.FieldErrors />
 						</Form.Field>
 					</div>
@@ -69,7 +71,7 @@
 						<Form.Field {form} name="password">
 							<Form.Control>
 								{#snippet children({ props })}
-									<Form.Label for="password">Password</Form.Label>
+									<Form.Label for="password">{m.password_label()}</Form.Label>
 									<div class="relative">
 										<Input
 											type={!show ? 'password' : 'text'}
@@ -79,7 +81,7 @@
 											required
 										/>
 										<Button
-											class="absolute inset-y-0 right-0 hover:bg-transparent "
+											class="absolute inset-y-0 hover:bg-transparent ltr:right-0 rtl:left-0 "
 											variant="ghost"
 											size="icon"
 											onclick={togglePassword}
@@ -95,12 +97,12 @@
 									</div>
 								{/snippet}
 							</Form.Control>
-							<Form.Description>This is your Password.</Form.Description>
+							<Form.Description>{m.password_desc()}</Form.Description>
 							<Form.FieldErrors />
 						</Form.Field>
 
 						<a href="##" class="ml-auto inline-block text-sm underline-offset-4 hover:underline">
-							Forgot your password?
+							{m.forget_desc()}
 						</a>
 					</div>
 				</div>
@@ -110,9 +112,8 @@
 			<Form.Button class=" inline-flex w-full  " form="Login" disabled={$delayed}>
 				{#if $delayed}
 					<LoaderCircle class="animate-spin" />
-				{/if}Login
+				{/if}{m.log_in()}
 			</Form.Button>
-			<Button variant="outline" class="w-full">Login with Google</Button>
 		</Card.Footer>
 	</Card.Root>
 </section>

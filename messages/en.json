@@ -14,5 +14,67 @@
 	"ago_main_piranha_boost": "with Essential Patient Reports",
 	"fluffy_big_dingo_stir": "Empower your healthcare practice with streamlined reporting tools and real-time insights.",
 	"few_patchy_turkey_glow": "Let's Start",
-	"proplems_header": "Simplify Patient Management & Reporting"
+	"proplems_header": "Simplify Patient Management & Reporting",
+	"pricing_header": "Simple pricing for everyone.",
+	"pricing_one": "Choose an",
+	"pricing_second": "affordable plan",
+	"pricing_third": "that&apos;s packed with the best features for engaging your audience, creating customer loyalty,\n\t\t\t\tand driving sales.",
+	"annual": "Annual",
+	"subscribing": "Subscribing",
+	"polite_round_haddock_empower": "Subscribe",
+	"months_free": [
+		{
+			"declarations": [
+				"input count",
+				"local countPlural = count: plural"
+			],
+			"selectors": [
+				"count",
+				"countPlural"
+			],
+			"match": {
+				"count=0": "لا أشهر مجانًا",
+				"count=1": "1 month free",
+				"count=2": "2 months free",
+				"countPlural=few": "{count} أشهر مجانًا",
+				"countPlural=many": "{count} شهرًا مجانًا",
+				"countPlural=other": "{count} months free"
+			}
+		}
+	],
+	"month": "month",
+	"year": "year",
+	"faq": "Frequently Asked Questions",
+	"sign_up": "Sign Up",
+	"footer": "All rights reserved.",
+	"vivid_wise_bullock_cheer": "Login to your account",
+	"email_desc": "Enter your email below to login to your account",
+	"email_label": "Email",
+	"email_field": "This is your Email.",
+	"password_label": "Password",
+	"password_desc": "This is your Password.",
+	"forget_desc": "Forgot your password?",
+	"email_error": "Wrong Email",
+	"password_error": "Too short Password.",
+	"password_error_second": "Password is too long",
+	"center_error": "Center name is required",
+	"center_error_second": "Center name is too long",
+	"doctor_error": "Doctor name is required",
+	"doctor_error_second": "Doctor name is too long",
+	"phonenumber_error": " 'Phone number is required'",
+	"doctor_type_error": "Please select either Dentist or Optometrist",
+	"confirm_password_error": "Passwords don't match",
+	"doctor_type_title": "Doctor Type",
+	"sign_up_title": "Let's Create",
+	"sign_up_desc": "Fill in your details below to create your account",
+	"gross_fancy_worm_flop": "Must be at least 8 characters.",
+	"confirm_password_title": "Confirm Password",
+	"center_title": "Center Name",
+	"center_placeholder": "Enter your clinic or center name",
+	"doctor_name_title": "Doctor Name",
+	"smart_watery_termite_startle": "Enter your full name",
+	"phone_number_title": "Phone Number",
+	"clean_jumpy_gull_nail": "Enter your phone number",
+	"dentist": "Dentist",
+	"optometrist": "Optometrist"
 }

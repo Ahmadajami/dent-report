@@ -5,10 +5,11 @@ import { AppConstants } from '$lib';
 import { message, superValidate, type ErrorStatus } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { authschema } from '$lib/auth/schema';
+import { localizeHref } from '$lib/paraglide/runtime';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.user) {
-		redirect(302, '/gg');
+		redirect(302, localizeHref('/gg'));
 	}
 	return { form: await superValidate(zod4(authschema)) };
 };
@@ -64,6 +65,6 @@ export const actions: Actions = {
 			maxAge: 60 * 60 * 24
 		});
 
-		redirect(302, '/gg');
+		redirect(302, localizeHref('/gg'));
 	}
 };

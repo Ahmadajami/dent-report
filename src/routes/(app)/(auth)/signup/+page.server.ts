@@ -4,10 +4,11 @@ import { loginUser, type UserModel } from '$lib/auth/auth';
 import { message, superValidate, type ErrorStatus } from 'sveltekit-superforms';
 import { zod4 } from 'sveltekit-superforms/adapters';
 import { signupSchema } from '$lib/auth/schema';
+import { localizeHref } from '$lib/paraglide/runtime';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.user) {
-		redirect(302, '/gg');
+		redirect(302, localizeHref('/gg'));
 	}
 	return {
 		form: await superValidate(zod4(signupSchema))
@@ -21,8 +22,6 @@ export const actions: Actions = {
 			console.log(form.data);
 			return fail(400, { form });
 		}
-		console.log('form is valid');
-		console.log(form.data);
 
 		try {
 			const res = await loginUser(form.data.email, form.data.password, fetch);
@@ -58,6 +57,6 @@ export const actions: Actions = {
 			});
 		}
 
-		redirect(302, '/gg');
+		redirect(302, localizeHref('/login'));
 	}
 };

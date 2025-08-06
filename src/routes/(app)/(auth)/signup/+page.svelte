@@ -17,6 +17,7 @@
 	import { zod4Client } from 'sveltekit-superforms/adapters';
 	import { signupSchema } from '$lib/auth/schema';
 	import { toast } from 'svelte-sonner';
+	import { m } from '$lib/paraglide/messages';
 
 	// Props
 	let { data }: PageProps = $props();
@@ -26,14 +27,12 @@
 	let confirmPasswordVisible = $state(false);
 	// Form setup
 	const form = superForm(data.form, {
-		validators: zod4Client(signupSchema),
-
-		taintedMessage: true
+		validators: zod4Client(signupSchema)
 	});
 
 	const { form: formData, enhance, delayed, message, validate } = form;
 	const selectedDoctorLabel = $derived(
-		$formData.doctorType == 'Empty' ? 'Select your specialization' : $formData.doctorType
+		$formData.doctorType == 'Empty' ? m.doctor_type_title() : $formData.doctorType
 	);
 
 	// Password visibility toggles
@@ -62,8 +61,8 @@
 <section class="mx-auto flex min-h-svh max-w-screen-md items-center justify-center">
 	<Card.Root class="w-full max-w-2xl bg-transparent backdrop-blur-sm">
 		<Card.Header>
-			<Card.Title>Let's Create</Card.Title>
-			<Card.Description>Fill in your details below to create your account</Card.Description>
+			<Card.Title>{m.sign_up_title()}</Card.Title>
+			<Card.Description>{m.sign_up_desc()}</Card.Description>
 		</Card.Header>
 
 		<Card.Content>
@@ -72,7 +71,7 @@
 					<Form.Field {form} name="email" class="md:col-span-2">
 						<Form.Control>
 							{#snippet children({ props })}
-								<Form.Label for="email">Email</Form.Label>
+								<Form.Label for="email">{m.email_label()}</Form.Label>
 								<Input
 									type="email"
 									placeholder="m@example.com"
@@ -89,7 +88,7 @@
 					<Form.Field {form} name="password">
 						<Form.Control>
 							{#snippet children({ props })}
-								<Form.Label for="password">Password</Form.Label>
+								<Form.Label for="password">{m.password_label()}</Form.Label>
 								<div class="relative">
 									<Input
 										type={passwordVisible ? 'text' : 'password'}
@@ -100,7 +99,7 @@
 									/>
 									<Button
 										type="button"
-										class="absolute inset-y-0 right-0 hover:bg-transparent"
+										class="absolute inset-y-0 hover:bg-transparent ltr:right-0 rtl:left-0"
 										variant="ghost"
 										size="icon"
 										onclick={togglePasswordVisibility}
@@ -117,14 +116,14 @@
 								</div>
 							{/snippet}
 						</Form.Control>
-						<Form.Description>Must be at least 8 characters.</Form.Description>
+						<Form.Description>{m.gross_fancy_worm_flop()}</Form.Description>
 						<Form.FieldErrors />
 					</Form.Field>
 
 					<Form.Field {form} name="confirmPassword">
 						<Form.Control>
 							{#snippet children({ props })}
-								<Form.Label for="confirmPassword">Confirm Password</Form.Label>
+								<Form.Label for="confirmPassword">{m.confirm_password_title()}</Form.Label>
 								<div class="relative">
 									<Input
 										type={confirmPasswordVisible ? 'text' : 'password'}
@@ -135,7 +134,7 @@
 									/>
 									<Button
 										type="button"
-										class="absolute inset-y-0 right-0 hover:bg-transparent"
+										class="absolute inset-y-0 hover:bg-transparent ltr:right-0 rtl:left-0"
 										variant="ghost"
 										size="icon"
 										onclick={toggleConfirmPasswordVisibility}
@@ -158,11 +157,11 @@
 					<Form.Field {form} name="centerName" class="md:col-span-2">
 						<Form.Control>
 							{#snippet children({ props })}
-								<Form.Label for="centerName">Center Name</Form.Label>
+								<Form.Label for="centerName">{m.center_title()}</Form.Label>
 								<Input
 									type="text"
 									bind:value={$formData.centerName}
-									placeholder="Enter your clinic or center name"
+									placeholder={m.center_placeholder()}
 									required
 									{...props}
 								/>
@@ -174,11 +173,11 @@
 					<Form.Field {form} name="doctorName">
 						<Form.Control>
 							{#snippet children({ props })}
-								<Form.Label for="doctorName">Doctor Name</Form.Label>
+								<Form.Label for="doctorName">{m.doctor_name_title()}</Form.Label>
 								<Input
 									type="text"
 									bind:value={$formData.doctorName}
-									placeholder="Enter your full name"
+									placeholder={m.smart_watery_termite_startle()}
 									required
 									{...props}
 								/>
@@ -190,11 +189,11 @@
 					<Form.Field {form} name="phoneNumber">
 						<Form.Control>
 							{#snippet children({ props })}
-								<Form.Label for="phoneNumber">Phone Number</Form.Label>
+								<Form.Label for="phoneNumber">{m.phone_number_title()}</Form.Label>
 								<Input
 									type="tel"
 									bind:value={$formData.phoneNumber}
-									placeholder="Enter your phone number"
+									placeholder={m.clean_jumpy_gull_nail()}
 									autocomplete="tel"
 									required
 									{...props}
@@ -207,19 +206,19 @@
 					<Form.Field {form} name="doctorType" class="md:col-span-2">
 						<Form.Control>
 							{#snippet children({ props })}
-								<Form.Label>Doctor Type</Form.Label>
+								<Form.Label>{m.doctor_type_title()}</Form.Label>
 								<Select.Root type="single" bind:value={$formData.doctorType} name={props.name}>
 									<Select.Trigger {...props} class="w-full">
 										{selectedDoctorLabel}
 									</Select.Trigger>
 									<Select.Content>
-										<Select.Item value="Dentist" label="Dentist" />
-										<Select.Item value="Optometrist" label="Optometrist" />
+										<Select.Item value="Dentist" label={m.dentist()} />
+										<Select.Item value="Optometrist" label={m.optometrist()} />
 									</Select.Content>
 								</Select.Root>
 							{/snippet}
 						</Form.Control>
-						<Form.Description>Please select your specialization.</Form.Description>
+						<Form.Description>{m.doctor_type_title()}</Form.Description>
 						<Form.FieldErrors />
 					</Form.Field>
 				</div>
@@ -231,7 +230,7 @@
 				{#if $delayed}
 					<LoaderCircle class="mr-2 h-4 w-4 animate-spin" />
 				{/if}
-				Sign Up
+				{m.sign_up()}
 			</Form.Button>
 		</Card.Footer>
 	</Card.Root>
