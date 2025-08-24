@@ -1,22 +1,23 @@
 <script lang="ts" module>
+	import { m } from '$lib/paraglide/messages';
 	import AudioWaveformIcon from '@lucide/svelte/icons/audio-waveform';
-	import BookOpenIcon from '@lucide/svelte/icons/book-open';
-	import BotIcon from '@lucide/svelte/icons/bot';
 	import ChartPieIcon from '@lucide/svelte/icons/chart-pie';
 	import CommandIcon from '@lucide/svelte/icons/command';
 	import FrameIcon from '@lucide/svelte/icons/frame';
 	import GalleryVerticalEndIcon from '@lucide/svelte/icons/gallery-vertical-end';
 	import MapIcon from '@lucide/svelte/icons/map';
 	import Settings2Icon from '@lucide/svelte/icons/settings-2';
-	import SquareTerminalIcon from '@lucide/svelte/icons/square-terminal';
-
+	import ClipboardPlus from '@lucide/svelte/icons/clipboard-plus';
+	import UserPlus from '@lucide/svelte/icons/user-plus';
 	// This is sample data.
 	const data = {
+		//user
 		user: {
 			name: 'shadcn',
 			email: 'm@example.com',
 			avatar: 'https://picsum.photos/200'
 		},
+		//secrutary data
 		teams: [
 			{
 				name: 'Acme Inc',
@@ -34,69 +35,48 @@
 				plan: 'Free'
 			}
 		],
+		// main nav
 		navMain: [
 			{
-				title: 'Playground',
+				title: m.patients(),
 				url: '#',
-				icon: SquareTerminalIcon,
+				icon: UserPlus,
 				isActive: true,
 				items: [
 					{
-						title: 'History',
+						title: m.add_patient(),
 						url: '#'
 					},
 					{
-						title: 'Starred',
+						title: m.edit_patient(),
 						url: '#'
 					},
 					{
-						title: 'Settings',
+						title: 'View Patient',
 						url: '#'
 					}
 				]
 			},
 			{
-				title: 'Models',
+				title: 'Reports',
 				url: '#',
-				icon: BotIcon,
+				icon: ClipboardPlus,
 				items: [
 					{
-						title: 'Genesis',
+						title: 'New Report',
 						url: '#'
 					},
 					{
-						title: 'Explorer',
+						title: 'Latest Report',
 						url: '#'
 					},
 					{
-						title: 'Quantum',
+						title: 'Reports History',
 						url: '#'
 					}
 				]
 			},
-			{
-				title: 'Documentation',
-				url: '#',
-				icon: BookOpenIcon,
-				items: [
-					{
-						title: 'Introduction',
-						url: '#'
-					},
-					{
-						title: 'Get Started',
-						url: '#'
-					},
-					{
-						title: 'Tutorials',
-						url: '#'
-					},
-					{
-						title: 'Changelog',
-						url: '#'
-					}
-				]
-			},
+
 			{
 				title: 'Settings',
 				url: '#',
@@ -107,20 +87,17 @@
 						url: '#'
 					},
 					{
-						title: 'Team',
+						title: 'Support',
 						url: '#'
 					},
 					{
-						title: 'Billing',
-						url: '#'
-					},
-					{
-						title: 'Limits',
+						title: 'Billing info',
 						url: '#'
 					}
 				]
 			}
 		],
+		// lates report nav
 		projects: [
 			{
 				name: 'Design Engineering',
@@ -148,6 +125,7 @@
 	import NavUser from '$lib/components/Dashboard/Layout/nav-user.svelte';
 	import TeamSwitcher from '$lib/components/Dashboard/Layout/team-switcher.svelte';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
+
 	import type { ComponentProps } from 'svelte';
 	import { page } from '$app/state';
 	let isArabic = getLocale() == 'ar';

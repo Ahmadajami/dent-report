@@ -76,5 +76,8 @@
 	"phone_number_title": "Phone Number",
 	"clean_jumpy_gull_nail": "Enter your phone number",
 	"dentist": "Dentist",
-	"optometrist": "Optometrist"
+	"optometrist": "Optometrist",
+	"patients": "Patients",
+	"add_patient": "Add Patient",
+	"edit_patient": "Edit Patient"
 }

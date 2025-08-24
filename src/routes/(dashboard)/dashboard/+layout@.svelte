@@ -1,14 +1,14 @@
 <script lang="ts">
 	import type { LayoutProps } from './$types';
 	import AppSidebar from '$lib/components/Dashboard/Layout/app-sidebar.svelte';
-	import * as Breadcrumb from '$lib/components/ui/breadcrumb/index.js';
 	import { Separator } from '$lib/components/ui/separator/index.js';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import { Button } from '$lib/components/ui/button/index.js';
 	import { localizeHref } from '$lib/paraglide/runtime';
 	import { onNavigate } from '$app/navigation';
-	import { lenis, easeInOutCubic } from '$lib/lenis';
+	import { lenis } from '$lib/lenis';
 	import { onDestroy } from 'svelte';
+	import BreadCrumb from '$lib/components/Dashboard/BreadCrumb.svelte';
 
 	let { data, children }: LayoutProps = $props();
 	onNavigate((navigation) => {
@@ -40,17 +40,7 @@
 			<div class="flex items-center gap-2 px-4">
 				<Sidebar.Trigger class="-ml-1" />
 				<Separator orientation="vertical" class="mr-2 data-[orientation=vertical]:h-4" />
-				<Breadcrumb.Root>
-					<Breadcrumb.List>
-						<Breadcrumb.Item class="hidden md:block">
-							<Breadcrumb.Link href="#">Building Your Application</Breadcrumb.Link>
-						</Breadcrumb.Item>
-						<Breadcrumb.Separator class="hidden md:block" />
-						<Breadcrumb.Item>
-							<Breadcrumb.Page>Data Fetching</Breadcrumb.Page>
-						</Breadcrumb.Item>
-					</Breadcrumb.List>
-				</Breadcrumb.Root>
+				<BreadCrumb />
 			</div>
 
 			<!-- Right section (CTA button) -->
@@ -65,27 +55,40 @@
 </Sidebar.Provider>
 
 <style>
-	@keyframes fade-in-content {
+	@keyframes fade-in {
 		from {
 			opacity: 0;
-			transform: translateY(10px);
 		}
 	}
 
-	@keyframes fade-out-content {
+	@keyframes fade-out {
 		to {
 			opacity: 0;
-			transform: translateY(-10px);
 		}
 	}
 
-	/* Only animate the main content */
-	::view-transition-old(main-content) {
-		animation: 100ms ease both fade-out-content;
+	@keyframes slide-from-right {
+		from {
+			transform: translateX(30px);
+		}
 	}
 
-	::view-transition-new(main-content) {
-		animation: 200ms ease both fade-in-content;
+	@keyframes slide-to-left {
+		to {
+			transform: translateX(-30px);
+		}
+	}
+
+	:root::view-transition-old(main-content) {
+		animation:
+			90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+			300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
+	}
+
+	:root::view-transition-new(main-content) {
+		animation:
+			210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
+			300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
 	}
 	:root::view-transition-old(root),
 	:root::view-transition-new(root) {

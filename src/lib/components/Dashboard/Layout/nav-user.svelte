@@ -1,3 +1,12 @@
+<script lang="ts" module>
+	import BadgeCheckIcon from '@lucide/svelte/icons/badge-check';
+	import BellIcon from '@lucide/svelte/icons/bell';
+	import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down';
+	import CreditCardIcon from '@lucide/svelte/icons/credit-card';
+	import LogOutIcon from '@lucide/svelte/icons/log-out';
+	import SparklesIcon from '@lucide/svelte/icons/sparkles';
+</script>
+
 <script lang="ts">
 	import { enhance } from '$app/forms';
 	import type { UserModel } from '$lib/auth/auth';
@@ -5,15 +14,11 @@
 	import * as DropdownMenu from '$lib/components/ui/dropdown-menu/index.js';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import { useSidebar } from '$lib/components/ui/sidebar/index.js';
-	import BadgeCheckIcon from '@lucide/svelte/icons/badge-check';
-	import BellIcon from '@lucide/svelte/icons/bell';
-	import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down';
-	import CreditCardIcon from '@lucide/svelte/icons/credit-card';
-	import LogOutIcon from '@lucide/svelte/icons/log-out';
-	import SparklesIcon from '@lucide/svelte/icons/sparkles';
-
+	import Switch from '$lib/components/ui/switch/switch.svelte';
+	import { getLocale, setLocale } from '$lib/paraglide/runtime';
 	let { user }: { user: UserModel } = $props();
 	const sidebar = useSidebar();
+	const isArabic = getLocale() == 'ar';
 </script>
 
 {#snippet logout()}
@@ -85,12 +90,26 @@
 						Billing
 					</DropdownMenu.Item>
 					<DropdownMenu.Item>
-						<BellIcon />
-						Notifications
+						{#snippet child({ props })}
+							<div class="realative" {...props}>
+								<span class="ltr:block rtl:hidden">English</span>
+								<span class=" ltr:hidden rtl:block">Arabic</span>
+								<Switch
+									class="absolute top-1/2 right-2 -translate-y-1/2"
+									checked={isArabic}
+									onCheckedChange={() => {
+										if (isArabic) {
+											setLocale('en');
+										} else {
+											setLocale('ar');
+										}
+									}}
+								/>
+							</div>{/snippet}
 					</DropdownMenu.Item>
 				</DropdownMenu.Group>
 				<DropdownMenu.Separator />
-				<DropdownMenu.Item child={logout}></DropdownMenu.Item>
+				<DropdownMenu.Item child={logout} />
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 	</Sidebar.MenuItem>

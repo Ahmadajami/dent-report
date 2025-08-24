@@ -1,10 +1,16 @@
+<script lang="ts" module>
+	import ChevronRightIcon from '@lucide/svelte/icons/chevron-right';
+	import ChevronLeftIcon from '@lucide/svelte/icons/chevron-left';
+</script>
+
 <script lang="ts">
-	import * as Collapsible from "$lib/components/ui/collapsible/index.js";
-	import * as Sidebar from "$lib/components/ui/sidebar/index.js";
-	import ChevronRightIcon from "@lucide/svelte/icons/chevron-right";
+	import * as Collapsible from '$lib/components/ui/collapsible/index.js';
+	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
+	import { getLocale } from '$lib/paraglide/runtime';
+	import { m } from '$lib/paraglide/messages';
 
 	let {
-		items,
+		items
 	}: {
 		items: {
 			title: string;
@@ -22,7 +28,7 @@
 </script>
 
 <Sidebar.Group>
-	<Sidebar.GroupLabel>Platform</Sidebar.GroupLabel>
+	<Sidebar.GroupLabel>{m.patients()}</Sidebar.GroupLabel>
 	<Sidebar.Menu>
 		{#each items as item (item.title)}
 			<Collapsible.Root open={item.isActive} class="group/collapsible">
@@ -35,9 +41,15 @@
 										<item.icon />
 									{/if}
 									<span>{item.title}</span>
-									<ChevronRightIcon
-										class="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90"
-									/>
+									{#if getLocale() == 'ar'}
+										<ChevronLeftIcon
+											class="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90"
+										/>
+									{:else}
+										<ChevronRightIcon
+											class="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90"
+										/>
+									{/if}
 								</Sidebar.MenuButton>
 							{/snippet}
 						</Collapsible.Trigger>
