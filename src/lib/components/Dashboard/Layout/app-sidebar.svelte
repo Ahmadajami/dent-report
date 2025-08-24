@@ -1,162 +1,164 @@
 <script lang="ts" module>
-	import AudioWaveformIcon from "@lucide/svelte/icons/audio-waveform";
-	import BookOpenIcon from "@lucide/svelte/icons/book-open";
-	import BotIcon from "@lucide/svelte/icons/bot";
-	import ChartPieIcon from "@lucide/svelte/icons/chart-pie";
-	import CommandIcon from "@lucide/svelte/icons/command";
-	import FrameIcon from "@lucide/svelte/icons/frame";
-	import GalleryVerticalEndIcon from "@lucide/svelte/icons/gallery-vertical-end";
-	import MapIcon from "@lucide/svelte/icons/map";
-	import Settings2Icon from "@lucide/svelte/icons/settings-2";
-	import SquareTerminalIcon from "@lucide/svelte/icons/square-terminal";
+	import AudioWaveformIcon from '@lucide/svelte/icons/audio-waveform';
+	import BookOpenIcon from '@lucide/svelte/icons/book-open';
+	import BotIcon from '@lucide/svelte/icons/bot';
+	import ChartPieIcon from '@lucide/svelte/icons/chart-pie';
+	import CommandIcon from '@lucide/svelte/icons/command';
+	import FrameIcon from '@lucide/svelte/icons/frame';
+	import GalleryVerticalEndIcon from '@lucide/svelte/icons/gallery-vertical-end';
+	import MapIcon from '@lucide/svelte/icons/map';
+	import Settings2Icon from '@lucide/svelte/icons/settings-2';
+	import SquareTerminalIcon from '@lucide/svelte/icons/square-terminal';
 
 	// This is sample data.
 	const data = {
 		user: {
-			name: "shadcn",
-			email: "m@example.com",
-			avatar: "https://picsum.photos/200",
+			name: 'shadcn',
+			email: 'm@example.com',
+			avatar: 'https://picsum.photos/200'
 		},
 		teams: [
 			{
-				name: "Acme Inc",
+				name: 'Acme Inc',
 				logo: GalleryVerticalEndIcon,
-				plan: "Enterprise",
+				plan: 'Enterprise'
 			},
 			{
-				name: "Acme Corp.",
+				name: 'Acme Corp.',
 				logo: AudioWaveformIcon,
-				plan: "Startup",
+				plan: 'Startup'
 			},
 			{
-				name: "Evil Corp.",
+				name: 'Evil Corp.',
 				logo: CommandIcon,
-				plan: "Free",
-			},
+				plan: 'Free'
+			}
 		],
 		navMain: [
 			{
-				title: "Playground",
-				url: "#",
+				title: 'Playground',
+				url: '#',
 				icon: SquareTerminalIcon,
 				isActive: true,
 				items: [
 					{
-						title: "History",
-						url: "#",
+						title: 'History',
+						url: '#'
 					},
 					{
-						title: "Starred",
-						url: "#",
+						title: 'Starred',
+						url: '#'
 					},
 					{
-						title: "Settings",
-						url: "#",
-					},
-				],
+						title: 'Settings',
+						url: '#'
+					}
+				]
 			},
 			{
-				title: "Models",
-				url: "#",
+				title: 'Models',
+				url: '#',
 				icon: BotIcon,
 				items: [
 					{
-						title: "Genesis",
-						url: "#",
+						title: 'Genesis',
+						url: '#'
 					},
 					{
-						title: "Explorer",
-						url: "#",
+						title: 'Explorer',
+						url: '#'
 					},
 					{
-						title: "Quantum",
-						url: "#",
-					},
-				],
+						title: 'Quantum',
+						url: '#'
+					}
+				]
 			},
 			{
-				title: "Documentation",
-				url: "#",
+				title: 'Documentation',
+				url: '#',
 				icon: BookOpenIcon,
 				items: [
 					{
-						title: "Introduction",
-						url: "#",
+						title: 'Introduction',
+						url: '#'
 					},
 					{
-						title: "Get Started",
-						url: "#",
+						title: 'Get Started',
+						url: '#'
 					},
 					{
-						title: "Tutorials",
-						url: "#",
+						title: 'Tutorials',
+						url: '#'
 					},
 					{
-						title: "Changelog",
-						url: "#",
-					},
-				],
+						title: 'Changelog',
+						url: '#'
+					}
+				]
 			},
 			{
-				title: "Settings",
-				url: "#",
+				title: 'Settings',
+				url: '#',
 				icon: Settings2Icon,
 				items: [
 					{
-						title: "General",
-						url: "#",
+						title: 'General',
+						url: '#'
 					},
 					{
-						title: "Team",
-						url: "#",
+						title: 'Team',
+						url: '#'
 					},
 					{
-						title: "Billing",
-						url: "#",
+						title: 'Billing',
+						url: '#'
 					},
 					{
-						title: "Limits",
-						url: "#",
-					},
-				],
-			},
+						title: 'Limits',
+						url: '#'
+					}
+				]
+			}
 		],
 		projects: [
 			{
-				name: "Design Engineering",
-				url: "#",
-				icon: FrameIcon,
+				name: 'Design Engineering',
+				url: '#',
+				icon: FrameIcon
 			},
 			{
-				name: "Sales & Marketing",
-				url: "#",
-				icon: ChartPieIcon,
+				name: 'Sales & Marketing',
+				url: '#',
+				icon: ChartPieIcon
 			},
 			{
-				name: "Travel",
-				url: "#",
-				icon: MapIcon,
-			},
-		],
+				name: 'Travel',
+				url: '#',
+				icon: MapIcon
+			}
+		]
 	};
 </script>
 
 <script lang="ts">
-	import NavMain from "./nav-main.svelte";
-	import NavProjects from "./nav-projects.svelte";
-	import NavUser from "./nav-user.svelte";
-	import TeamSwitcher from "./team-switcher.svelte";
-	import * as Sidebar from "$lib/components/ui/sidebar/index.js";
-	import type { ComponentProps } from "svelte";
-
+	import { getLocale } from '$lib/paraglide/runtime';
+	import NavMain from '$lib/components/Dashboard/Layout/nav-main.svelte';
+	import NavProjects from '$lib/components/Dashboard/Layout/nav-projects.svelte';
+	import NavUser from '$lib/components/Dashboard/Layout/nav-user.svelte';
+	import TeamSwitcher from '$lib/components/Dashboard/Layout/team-switcher.svelte';
+	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
+	import type { ComponentProps } from 'svelte';
+	import { page } from '$app/state';
+	let isArabic = getLocale() == 'ar';
 	let {
 		ref = $bindable(null),
-		collapsible = "icon",
+		collapsible = 'icon',
 		...restProps
 	}: ComponentProps<typeof Sidebar.Root> = $props();
 </script>
 
-<Sidebar.Root {collapsible} {...restProps}>
+<Sidebar.Root variant="inset" side={isArabic ? 'right' : 'left'} {collapsible} {...restProps}>
 	<Sidebar.Header>
 		<TeamSwitcher teams={data.teams} />
 	</Sidebar.Header>
@@ -165,7 +167,8 @@
 		<NavProjects projects={data.projects} />
 	</Sidebar.Content>
 	<Sidebar.Footer>
-		<NavUser user={data.user} />
+		<NavUser user={page.data.user} />
 	</Sidebar.Footer>
+	<!--Sidebar.Rail is A Verticale component to with transpaertn exsistence whive work like triggers-->
 	<Sidebar.Rail />
 </Sidebar.Root>

@@ -1,7 +1,7 @@
 <script lang="ts">
+	import '../app.css';
 	import { Toaster } from '$lib/components/ui/sonner';
 	import { ModeWatcher } from 'mode-watcher';
-	import '../app.css';
 	import { type Snippet } from 'svelte';
 	import type { LayoutData } from './$types';
 	import { onNavigate } from '$app/navigation';
@@ -9,6 +9,13 @@
 
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 	onNavigate((navigation) => {
+		if (navigation.to) {
+			if (
+				navigation.to.url.pathname.startsWith('/dashboard') ||
+				navigation.to.url.pathname.startsWith('/ar/dashboard')
+			)
+				return;
+		}
 		if (!document.startViewTransition) return;
 
 		return new Promise((resolve) => {
@@ -18,8 +25,6 @@
 			});
 		});
 	});
-
-	//lenis.scrollTo(target, { duration: 2 })
 </script>
 
 <Cursor />

@@ -17,7 +17,7 @@
 	let {
 		springConfig = {
 			damping: 0.6,
-			stiffness: 0.1,
+			stiffness: 0.8,
 			precision: 0.001
 		}
 	}: Props = $props();

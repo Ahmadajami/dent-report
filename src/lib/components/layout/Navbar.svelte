@@ -24,7 +24,8 @@
 		about: localizeHref('/about'),
 		contact: localizeHref('#contact'),
 		login: localizeHref('/login'),
-		signup: localizeHref('/signup')
+		signup: localizeHref('/signup'),
+		dashboard: localizeHref('/dashboard')
 	};
 
 	function toggleMobileMenu() {
@@ -121,14 +122,15 @@
 						<Menu />
 					</Button>
 				{:else}
-					<span class="text-muted-foreground hidden text-sm md:inline"
-						>Welcome {page.data.user.username}</span
+					<a href={hrefs.dashboard} class="text-muted-foreground hidden text-sm md:inline"
+						>Welcome {page.data.user.username}</a
 					>
 					<form action="/logout" method="POST" use:enhance>
 						<Button variant="ghost" type="submit" class="hover:text-primary">{m.log_out()}</Button>
 					</form>
 					<GradintButton href={hrefs.signup} classname="hidden md:flex" />
 					<Themetoggle />
+					<Langugetoggle />
 					<Button
 						variant="ghost"
 						class="md:hidden"

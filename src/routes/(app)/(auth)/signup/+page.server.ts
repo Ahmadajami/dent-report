@@ -19,7 +19,6 @@ export const actions: Actions = {
 	default: async ({ request, fetch }) => {
 		const form = await superValidate(request, zod4(signupSchema));
 		if (!form.valid) {
-			console.log(form.data);
 			return fail(400, { form });
 		}
 
