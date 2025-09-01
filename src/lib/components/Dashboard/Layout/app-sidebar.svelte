@@ -120,14 +120,15 @@
 
 <script lang="ts">
 	import { getLocale } from '$lib/paraglide/runtime';
-	import NavMain from '$lib/components/Dashboard/Layout/nav-main.svelte';
-	import NavProjects from '$lib/components/Dashboard/Layout/nav-projects.svelte';
+	//import NavMain from '$lib/components/Dashboard/Layout/nav-main.svelte';
+	//import NavProjects from '$lib/components/Dashboard/Layout/nav-projects.svelte';
 	import NavUser from '$lib/components/Dashboard/Layout/nav-user.svelte';
 	import TeamSwitcher from '$lib/components/Dashboard/Layout/team-switcher.svelte';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 
 	import type { ComponentProps } from 'svelte';
 	import { page } from '$app/state';
+	import GptSidebar from './gpt-sidebar.svelte';
 	let isArabic = getLocale() == 'ar';
 	let {
 		ref = $bindable(null),
@@ -141,8 +142,9 @@
 		<TeamSwitcher teams={data.teams} />
 	</Sidebar.Header>
 	<Sidebar.Content>
-		<NavMain items={data.navMain} />
-		<NavProjects projects={data.projects} />
+		<GptSidebar navs={[{ name: 'Patient', url: '#', icon: UserPlus }]} />
+		<!--<NavMain items={data.navMain} />
+		<NavProjects projects={data.projects} />-->
 	</Sidebar.Content>
 	<Sidebar.Footer>
 		<NavUser user={page.data.user} />
