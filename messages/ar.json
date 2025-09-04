@@ -62,7 +62,7 @@
 	"doctor_error": "اسم الطبيب مطلوب",
 	"doctor_error_second": "اسم الطبيب طويل جدًا",
 	"phonenumber_error": " 'رقم الهاتف مطلوب'",
-	"doctor_type_error": "الرجاء اختيار طبيب أسنان أو طبيب عيون",
+	"doctor_type_error": "الرجاء إختيار عيادة أو مركز طبي",
 	"confirm_password_error": "كلمات المرور غير متطابقة",
 	"doctor_type_title": "نوع الطبيب",
 	"sign_up_title": "دعونا ننشئ",
@@ -78,5 +78,10 @@
 	"dentist": "طبيب أسنان",
 	"optometrist": "طبيب عيون",
 	"patients": "مرضى",
-	"add_patient": "إضافة مريض"
+	"add_patient": "إضافة مريض",
+	"clinic_type": "نوع المركز",
+	"medical_center": "مركز طبي",
+	"clinc": "عيادة",
+	"center_doctor_count_error": "يجب أن يكون لدى المركز الطبي طبيبين على الأقل",
+	"gender_error": "الرجاء الإختيار"
 }

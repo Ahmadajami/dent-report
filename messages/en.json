@@ -62,7 +62,7 @@
 	"doctor_error": "Doctor name is required",
 	"doctor_error_second": "Doctor name is too long",
 	"phonenumber_error": " 'Phone number is required'",
-	"doctor_type_error": "Please select either Dentist or Optometrist",
+	"doctor_type_error": "Please select either Medical Center or Clinic",
 	"confirm_password_error": "Passwords don't match",
 	"doctor_type_title": "Doctor Type",
 	"sign_up_title": "Let's Create",
@@ -79,5 +79,10 @@
 	"optometrist": "Optometrist",
 	"patients": "Patients",
 	"add_patient": "Add Patient",
-	"edit_patient": "Edit Patient"
+	"edit_patient": "Edit Patient",
+	"clinic_type": "Center Type",
+	"clinc": "Clinic",
+	"medical_center": "Medical Center",
+	"center_doctor_count_error": "At least 2 doctors are required for a Medical Center",
+	"gender_error": "Select a gender"
 }
