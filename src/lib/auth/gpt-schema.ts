@@ -1,9 +1,9 @@
 import { z } from 'zod/v4';
+import { m } from '$lib/paraglide/messages';
 
-/* ---------- Shared helpers ---------- */
-const phoneRegex = /^[0-9]{8,15}$/;
-
-const SpecializationEnum = z.enum([
+// Define the enum for specialization as requested.
+export const SPECIALIZATION_TYPES = [
+	'Empty',
 	'General Dentist',
 	'Orthodontist',
 	'Periodontist',
@@ -12,110 +12,43 @@ const SpecializationEnum = z.enum([
 	'Oral Surgeon',
 	'Pediatric Dentist',
 	'Other'
-]);
+] as const;
 
-/* ---------- Reusable Doctor Schema ---------- */
-export const DoctorSchema = z.object({
-	fullName: z.string().min(1, 'Full name is required'),
-	fullNameArabic: z.string().min(1, 'Arabic full name is required'),
-	phone: z.string().regex(phoneRegex, 'Enter a valid phone number (8–15 digits)'),
-	specialization: SpecializationEnum
-});
+// Use the constant array to define the Zod enum and its validation.
+const SpecializationEnum = z
+	.enum(SPECIALIZATION_TYPES)
+	.default('Empty')
+	.refine((val) => {
+		return val !== 'Empty';
+	}, m.specialization_wrong());
 
-export type Doctor = z.infer<typeof DoctorSchema>;
-
-/* ---------- Step 1: Doctor Info + Passwords ---------- */
-export const StepOneSchema = z
+export const clinicSchema = z
 	.object({
-		fullName: z.string().min(1, 'Full name is required'),
-		fullNameArabic: z.string().min(1, 'Arabic full name is required'),
-		phone: z.string().regex(phoneRegex, 'Enter a valid phone number (8–15 digits)'),
+		phoneNumber: z
+			.string()
+			.min(10, 'Phone number must be at least 10 characters long')
+			.max(16, 'Phone number must not exceed 15 characters')
+			.regex(
+				/^\+963[\d\s]+$/,
+				'Phone number must start with +963 and contain only digits and spaces after it'
+			),
+		fullname_ar: z.string().min(1, 'Arabic full name is required'),
+		fullnamenglish: z.string().min(1, 'English full name is required'),
+		clinicName: z.string().min(1, 'Clinic name is required'),
 		specialization: SpecializationEnum,
-		password: z.string().min(8, 'Password must be at least 8 characters'),
+		password: z
+			.string()
+			.min(8, 'Password must be at least 8 characters long')
+			.max(100, 'Password must not exceed 100 characters'),
 		confirmPassword: z.string()
 	})
 	.check((ctx) => {
 		if (ctx.value.password !== ctx.value.confirmPassword) {
 			ctx.issues.push({
-				input: ctx.value,
+				code: 'custom',
+				message: m.confirm_password_error(),
 				path: ['confirmPassword'],
-				message: 'Passwords do not match',
-				code: 'custom'
+				input: ctx.value
 			});
 		}
 	});
-
-export type StepOne = z.infer<typeof StepOneSchema>;
-
-/* ---------- Step 2: Extends Step 1 with Organization Info ---------- */
-export const StepTwoSchema = StepOneSchema.extend({
-	role: z.enum(['doctor', 'admin']).default('doctor'),
-	organizationType: z.enum(['clinic', 'medicalCentre']),
-	clinicName: z.string().optional(),
-	centreName: z.string().optional(),
-	doctors: z.array(DoctorSchema).default([])
-}).check((ctx) => {
-	// If the user is a doctor, their professional info is required
-	if (
-		ctx.value.role === 'doctor' &&
-		(!ctx.value.fullName ||
-			!ctx.value.fullNameArabic ||
-			!ctx.value.phone ||
-			!ctx.value.specialization)
-	) {
-		ctx.issues.push({
-			input: ctx.value,
-			path: ['doctor'],
-			message:
-				'Your professional info is required (full name, arabic name, phone, specialization).',
-			code: 'custom'
-		});
-	}
-
-	// Validation rules for a 'clinic'
-	if (ctx.value.organizationType === 'clinic') {
-		if (!ctx.value.clinicName?.trim()) {
-			ctx.issues.push({
-				input: ctx.value,
-				path: ['clinicName'],
-				message: 'Clinic name is required.',
-				code: 'custom'
-			});
-		}
-		// An admin must add at least one doctor
-		if (ctx.value.role === 'admin' && ctx.value.doctors.length < 1) {
-			ctx.issues.push({
-				input: ctx.value,
-				path: ['doctors'],
-				message: 'Please add at least one doctor for the clinic.',
-				code: 'custom'
-			});
-		}
-	}
-
-	// Validation rules for a 'medicalCentre'
-	if (ctx.value.organizationType === 'medicalCentre') {
-		if (!ctx.value.centreName?.trim()) {
-			ctx.issues.push({
-				input: ctx.value,
-				path: ['centreName'],
-				message: 'Medical centre name is required.',
-				code: 'custom'
-			});
-		}
-		// A medical centre must have at least 2 doctors total
-		const signingDoctorCount = ctx.value.role === 'doctor' ? 1 : 0;
-		const totalDoctors = signingDoctorCount + ctx.value.doctors.length;
-		if (totalDoctors < 2) {
-			ctx.issues.push({
-				input: ctx.value,
-				path: ['doctors'],
-				message:
-					'A medical centre must list at least 2 doctors (including the signing doctor, if applicable).',
-				code: 'custom'
-			});
-		}
-	}
-});
-
-export type StepTwo = z.infer<typeof StepTwoSchema>;

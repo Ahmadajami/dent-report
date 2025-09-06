@@ -5,7 +5,7 @@
 	import { type Snippet } from 'svelte';
 	import type { LayoutData } from './$types';
 	import { onNavigate } from '$app/navigation';
-	import Cursor from '$lib/components/MagicUi/Cursor.svelte';
+
 
 	let { data, children }: { data: LayoutData; children: Snippet } = $props();
 	onNavigate((navigation) => {
@@ -27,7 +27,7 @@
 	});
 </script>
 
-<Cursor />
+
 <ModeWatcher />
 <Toaster richColors position="top-center" />
 

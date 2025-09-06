@@ -84,5 +84,6 @@
 	"clinc": "Clinic",
 	"medical_center": "Medical Center",
 	"center_doctor_count_error": "At least 2 doctors are required for a Medical Center",
-	"gender_error": "Select a gender"
+	"gender_error": "Select a gender",
+	"specialization_wrong": "Please select a specialization"
 }
