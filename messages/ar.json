@@ -61,7 +61,7 @@
 	"center_error_second": "اسم المركز طويل جدًا",
 	"doctor_error": "اسم الطبيب مطلوب",
 	"doctor_error_second": "اسم الطبيب طويل جدًا",
-	"phonenumber_error": " 'رقم الهاتف مطلوب'",
+	"phonenumber_error": "رقم الهاتف مطلوب",
 	"doctor_type_error": "الرجاء إختيار عيادة أو مركز طبي",
 	"confirm_password_error": "كلمات المرور غير متطابقة",
 	"doctor_type_title": "نوع الطبيب",
@@ -83,5 +83,13 @@
 	"medical_center": "مركز طبي",
 	"clinc": "عيادة",
 	"center_doctor_count_error": "يجب أن يكون لدى المركز الطبي طبيبين على الأقل",
-	"gender_error": "الرجاء الإختيار"
+	"gender_error": "الرجاء الإختيار",
+	"back": "عودة",
+	"sign_up_header": "سجل دخول ",
+	"clinic_title": "إسم العيادة",
+	"specialization_title": "الإختصاص",
+	"doctors": "الأطباء",
+	"add_doctor": "إضافة طبيب",
+	"late_moving_dingo_talk": "إدارة مرضاك وإنشاء التقارير ",
+	"wild_low_warbler_reside": "أداة بسيطة وقوية لأخصائيي طب الأسنان."
 }

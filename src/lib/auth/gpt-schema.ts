@@ -1,7 +1,7 @@
 import { z } from 'zod/v4';
 import { m } from '$lib/paraglide/messages';
 
-// Define the enum for specialization as requested.
+// Define the enum for specialization.
 export const SPECIALIZATION_TYPES = [
 	'Empty',
 	'General Dentist',
@@ -14,41 +14,60 @@ export const SPECIALIZATION_TYPES = [
 	'Other'
 ] as const;
 
-// Use the constant array to define the Zod enum and its validation.
+// Zod Enum schema for specialization.
 const SpecializationEnum = z
 	.enum(SPECIALIZATION_TYPES)
 	.default('Empty')
-	.refine((val) => {
-		return val !== 'Empty';
-	}, m.specialization_wrong());
+	.refine((val) => val !== 'Empty', m.specialization_wrong());
+// --- Reusable base schema ---
+const personBaseSchema = z.object({
+	fullname_ar: z.string().trim().min(2, m.doctor_error()),
+	fullnamenglish: z.string().trim().min(2, m.doctor_error()),
+	phoneNumber: z
+		.string()
+		.min(10, m.phonenumber_error())
+		.max(16, m.phonenumber_error())
+		.regex(/^\+963[\d\s]+$/, m.phonenumber_error()),
+	specialization: SpecializationEnum
+});
 
-export const clinicSchema = z
-	.object({
-		phoneNumber: z
-			.string()
-			.min(10, 'Phone number must be at least 10 characters long')
-			.max(16, 'Phone number must not exceed 15 characters')
-			.regex(
-				/^\+963[\d\s]+$/,
-				'Phone number must start with +963 and contain only digits and spaces after it'
-			),
-		fullname_ar: z.string().min(1, 'Arabic full name is required'),
-		fullnamenglish: z.string().min(1, 'English full name is required'),
-		clinicName: z.string().min(1, 'Clinic name is required'),
-		specialization: SpecializationEnum,
-		password: z
-			.string()
-			.min(8, 'Password must be at least 8 characters long')
-			.max(100, 'Password must not exceed 100 characters'),
+// --- Doctor Schema (only uses base schema) ---
+export const doctorSchema = personBaseSchema;
+
+// --- Medical Schema ---
+export const medicalSchema = z.object({
+	centerName: z.string().trim().min(2, m.center_error()),
+	doctors: z
+		.array(doctorSchema)
+		.min(2, m.center_doctor_count_error())
+		.default([
+			{
+				fullname_ar: '',
+				fullnamenglish: '',
+				phoneNumber: '',
+				specialization: 'Empty'
+			},
+			{
+				fullname_ar: '',
+				fullnamenglish: '',
+				phoneNumber: '',
+				specialization: 'Empty'
+			}
+		])
+});
+
+// --- Clinic Schema ---
+export const clinicSchema = personBaseSchema
+	.extend({
+		clinicName: z.string().trim().min(2, m.center_error()),
+		password: z.string().min(8, m.gross_fancy_worm_flop()).max(100, m.password_error_second()),
 		confirmPassword: z.string()
 	})
-	.check((ctx) => {
-		if (ctx.value.password !== ctx.value.confirmPassword) {
-			ctx.issues.push({
-				code: 'custom',
-				message: m.confirm_password_error(),
-				path: ['confirmPassword'],
-				input: ctx.value
-			});
-		}
+	.refine((data) => data.password === data.confirmPassword, {
+		message: m.confirm_password_error(),
+		path: ['confirmPassword']
 	});
+
+export type ClinicSchema = typeof clinicSchema;
+
+export type MedicalSchema = typeof medicalSchema;

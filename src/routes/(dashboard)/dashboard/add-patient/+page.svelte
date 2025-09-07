@@ -1,9 +1,9 @@
 <script lang="ts">
+	import { Button } from '$lib/components/ui/button';
 	import * as Card from '$lib/components/ui/card/index';
-	import * as Select from '$lib/components/ui/select/index.js';
+	import { fade } from 'svelte/transition';
 	import type { PageProps } from './$types';
 
-	// Types
 	interface Tooth {
 		number: number;
 		name: string;
@@ -15,7 +15,6 @@
 		lower: Tooth[];
 	}
 
-	// Tooth data using FDI numbering system
 	const teethData: TeethData = {
 		upper: [
 			{ number: 18, name: 'Upper Right Third Molar', type: 'molar' },
@@ -55,13 +54,9 @@
 		]
 	};
 
-	// Svelte 5 reactive state using $state rune
 	let selectedTeeth = $state<Tooth[]>([]);
-
-	// Derived state using $derived rune
 	let selectedCount = $derived(selectedTeeth.length);
 
-	// Functions
 	function toggleTooth(tooth: Tooth): void {
 		const index = selectedTeeth.findIndex((t) => t.number === tooth.number);
 		if (index > -1) {
@@ -79,150 +74,172 @@
 		return selectedTeeth.some((t) => t.number === tooth.number);
 	}
 
-	// Props (if you want to make this configurable)
-
 	let { data }: PageProps = $props();
-	const numberingOptions = [
-		{ value: 'FDI', label: 'FDI' },
-		{ value: 'ISO', label: 'ISO' }
-	];
-	let numbering = $state('FDI');
-	const triggerContent = $derived(
-		numberingOptions.find((noption) => noption.value === numbering)?.label ??
-			'Select a Numbering System'
-	);
 	let title = 'Interactive Dental Chart';
 	let description = 'Click on any tooth to select/deselect it. Uses FDI numbering system.';
+	function selectAllTeeth(): void {
+		selectedTeeth = [...teethData.upper, ...teethData.lower];
+	}
 </script>
 
-<Card.Root class="w-full">
-	<Card.Header>
-		<h2 class="text2xl font-bold">{title}</h2>
-		<p class="text-muted">{description}</p>
-		<Card.Action>
-			<Select.Root type="single" name="Numbring System" bind:value={numbering}>
-				<Select.Trigger class="w-[180px]">
-					{triggerContent}
-				</Select.Trigger>
-				<Select.Content>
-					<Select.Group>
-						<Select.Label>Numbering Options</Select.Label>
-						{#each numberingOptions as noption (noption.value)}
-							<Select.Item value={noption.value} label={noption.label}>
-								{noption.label}
-							</Select.Item>
+<div class="page-container">
+	<Card.Root class="chart-card">
+		<Card.Header class=" flex flex-row items-center justify-between">
+			<h2 class="text-2xl font-bold">{title}</h2>
+			<p class="text-muted">{description}</p>
+			<!-- Select All button here -->
+			<Button variant="outline" onclick={selectAllTeeth}>Select All</Button>
+		</Card.Header>
+
+		<Card.Content class="flex flex-col items-center gap-12">
+			<div class="jaw">
+				<h3 class="jaw-title">Upper Jaw</h3>
+				<div class="teeth-row">
+					{#each teethData.upper as tooth (tooth.number)}
+						<button
+							class="tooth {tooth.type} {isSelected(tooth) ? 'selected' : ''}"
+							title={tooth.name}
+							onclick={() => toggleTooth(tooth)}
+						>
+							{tooth.number}
+						</button>
+					{/each}
+				</div>
+			</div>
+
+			<div class="jaw">
+				<h3 class="jaw-title">Lower Jaw</h3>
+				<div class="teeth-row">
+					{#each teethData.lower as tooth (tooth.number)}
+						<button
+							class="tooth {tooth.type} {isSelected(tooth) ? 'selected' : ''}"
+							title={tooth.name}
+							onclick={() => toggleTooth(tooth)}
+						>
+							{tooth.number}
+						</button>
+					{/each}
+				</div>
+			</div>
+		</Card.Content>
+
+		{#if selectedCount > 0}
+			<Card.Footer class="selected-info">
+				<div class="flex flex-col gap-2" transition:fade={{ duration: 300 }}>
+					<h3>Selected Teeth ({selectedCount})</h3>
+					<div class="selected-teeth">
+						{#each selectedTeeth as tooth (tooth.number)}
+							<span class="selected-tooth-tag animate-in fade-in-0 zoom-in-5" title={tooth.name}>
+								{tooth.number}
+							</span>
 						{/each}
-					</Select.Group>
-				</Select.Content>
-			</Select.Root>
-		</Card.Action>
-	</Card.Header>
-	<Card.Content class="flex flex-col items-center justify-center gap-8">
-		<Card.Root class="w-full ">
-			<Card.Header>Upper Jaw</Card.Header>
-			<Card.Content class="flex flex-row items-center justify-center gap-0.5">
-				{#each teethData.upper as tooth (tooth.number)}
-					<button
-						class="tooth {tooth.type} {isSelected(tooth) ? 'selected' : ''}"
-						title={tooth.name}
-						onclick={() => toggleTooth(tooth)}
-					>
-						{tooth.number}
-					</button>
-				{/each}
-			</Card.Content>
-		</Card.Root>
-		<Card.Root class="w-full ">
-			<Card.Header>Lower Jaw</Card.Header>
-			<Card.Content class="flex flex-row items-center justify-center gap-0.5">
-				{#each teethData.lower as tooth (tooth.number)}
-					<button
-						class="tooth {tooth.type} {isSelected(tooth) ? 'selected' : ''}"
-						title={tooth.name}
-						onclick={() => toggleTooth(tooth)}
-					>
-						{tooth.number}
-					</button>
-				{/each}
-			</Card.Content>
-		</Card.Root>
-	</Card.Content>
-</Card.Root>
-{#if selectedCount > 0}
-	<div class="selected-info">
-		<h3>Selected Teeth ({selectedCount})</h3>
-		<div class="selected-teeth">
-			{#each selectedTeeth as tooth (tooth.number)}
-				<span class="selected-tooth-tag" title={tooth.name}>
-					{tooth.number}
-				</span>
-			{/each}
-		</div>
-		<button class="clear-button" onclick={clearSelection}> Clear All </button>
-	</div>
-{/if}
+					</div>
+					<div class="mt-2 flex gap-2">
+						<button class="clear-button" onclick={clearSelection}>Clear All</button>
+						<!-- Next button here -->
+						<button class="next-button">Next</button>
+					</div>
+				</div>
+			</Card.Footer>
+		{/if}
+	</Card.Root>
+</div>
 
 <style>
-	.card {
-		background: white;
-		border-radius: 12px;
-		box-shadow:
-			0 4px 6px -1px rgba(0, 0, 0, 0.1),
-			0 2px 4px -1px rgba(0, 0, 0, 0.06);
-		border: 1px solid #e2e8f0;
+	/* Header Select All button */
+	.select-all-button {
+		background: #10b981;
+		color: white;
+		border: none;
+		padding: 0.5rem 1rem;
+		border-radius: 6px;
+		cursor: pointer;
+		font-weight: 500;
+		/*transition: background 0.2s;*/
+	}
+	.select-all-button:hover {
+		background: #059669;
+	}
+
+	/* Next button in footer */
+	.next-button {
+		background: #3b82f6;
+		color: white;
+		border: none;
+		padding: 0.5rem 1rem;
+		border-radius: 6px;
+		cursor: pointer;
+		font-weight: 500;
+		/*transition: background 0.2s;*/
+	}
+	.next-button:hover {
+		background: #2563eb;
+	}
+	.page-container {
 		padding: 2rem;
-		max-width: 800px;
-		width: 100%;
-		margin: 0 auto;
-	}
-
-	.card-header {
-		margin-bottom: 2rem;
-		text-align: center;
-	}
-
-	.card-title {
-		font-size: 1.5rem;
-		font-weight: 600;
-		color: #1e293b;
-		margin-bottom: 0.5rem;
-	}
-
-	.card-description {
-		color: #64748b;
-		font-size: 0.875rem;
-	}
-
-	.dental-chart {
 		display: flex;
 		flex-direction: column;
-		gap: 2rem;
 		align-items: center;
 	}
 
-	.jaw-label {
+	.action-buttons button {
+		padding: 0.5rem 1rem;
+		border-radius: 6px;
 		font-weight: 500;
+		cursor: pointer;
+		/*	transition: background 0.2s;*/
+	}
+
+	.select-all-button {
+		background: #10b981;
+		color: white;
+		border: none;
+	}
+	.select-all-button:hover {
+		background: #059669;
+	}
+
+	.next-button {
+		background: #3b82f6;
+		color: white;
+		border: none;
+	}
+	.next-button:hover {
+		background: #2563eb;
+	}
+
+	.chart-card {
+		width: 100%;
+		max-width: 900px;
+	}
+
+	.jaw {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 0.5rem;
+	}
+
+	.jaw-title {
+		font-size: 1rem;
+		font-weight: 600;
 		color: #475569;
-		margin-right: 1rem;
-		min-width: 80px;
-		font-size: 0.875rem;
 	}
 
 	.teeth-row {
 		display: flex;
-		gap: 2px;
-		background: #f1f5f9;
+		gap: 4px;
+		background: #f8fafc;
 		padding: 8px;
 		border-radius: 8px;
 	}
 
 	.tooth {
-		width: 32px;
-		height: 40px;
+		width: 36px;
+		height: 44px;
 		border: 2px solid var(--primary);
 		border-radius: 6px 6px 12px 12px;
-		background: #ffffff;
-
+		background: #fff;
 		transition: all 0.2s ease;
 		display: flex;
 		align-items: center;
@@ -230,12 +247,11 @@
 		font-size: 0.75rem;
 		font-weight: 500;
 		color: #64748b;
-		position: relative;
 	}
 
 	.tooth:hover {
 		border-color: #3b82f6;
-		transform: translateY(-8px);
+		transform: translateY(-6px);
 		box-shadow: 0 4px 8px rgba(59, 130, 246, 0.2);
 	}
 
@@ -250,28 +266,17 @@
 	.tooth.molar {
 		border-radius: 6px;
 	}
-
 	.tooth.canine {
 		border-radius: 6px 6px 16px 16px;
 	}
-
 	.tooth.incisor {
 		border-radius: 4px 4px 12px 12px;
 	}
 
 	.selected-info {
-		margin-top: 2rem;
-		padding: 1rem;
-		background: #f8fafc;
-		border: 1px solid #e2e8f0;
-		border-radius: 8px;
-	}
-
-	.selected-info h3 {
-		color: #1e293b;
-		font-size: 1rem;
-		font-weight: 600;
-		margin-bottom: 0.5rem;
+		background: #f1f5f9;
+		border-top: 1px solid #e2e8f0;
+		padding-top: 1rem;
 	}
 
 	.selected-teeth {
@@ -290,6 +295,7 @@
 	}
 
 	.clear-button {
+		align-self: flex-start;
 		background: #ef4444;
 		color: white;
 		border: none;
@@ -298,30 +304,9 @@
 		cursor: pointer;
 		font-size: 0.875rem;
 		font-weight: 500;
-		transition: background 0.2s;
-		margin-top: 1rem;
+		/*transition: background 0.2s;*/
 	}
-
 	.clear-button:hover {
 		background: #dc2626;
-	}
-
-	/* Responsive design */
-	@media (max-width: 768px) {
-		.card {
-			padding: 1rem;
-			margin: 1rem;
-		}
-
-		.jaw {
-			flex-direction: column;
-			align-items: stretch;
-		}
-
-		.jaw-label {
-			margin-right: 0;
-			margin-bottom: 0.5rem;
-			text-align: center;
-		}
 	}
 </style>

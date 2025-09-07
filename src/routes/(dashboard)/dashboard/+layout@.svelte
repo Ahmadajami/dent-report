@@ -9,8 +9,10 @@
 	import { lenis } from '$lib/lenis';
 	import { onDestroy } from 'svelte';
 	import BreadCrumb from '$lib/components/Dashboard/BreadCrumb.svelte';
+	import { LoaderIcon } from '@lucide/svelte';
 
 	let { data, children }: LayoutProps = $props();
+	let formLoading = $state(false);
 	onNavigate((navigation) => {
 		if (!document.startViewTransition) return;
 
@@ -26,10 +28,18 @@
 	});
 </script>
 
+{#if formLoading}
+	<div
+		class="fixed inset-0 z-50 flex items-center justify-center bg-white/80 backdrop-blur transition-opacity"
+		style="view-transition-name: none;"
+	>
+		<LoaderIcon class="animate-spin " />
+	</div>
+{/if}
 <!--Side bar Provider-->
 <Sidebar.Provider>
 	<!--AppSidebar inside it the Sidebar.Root whic is sidebar Content-->
-	<AppSidebar />
+	<AppSidebar bind:formLoading />
 
 	<!--Sidebar.Inset Inset is the main Content is the main outside the sidebar-->
 	<Sidebar.Inset style="view-transition-name: none;">

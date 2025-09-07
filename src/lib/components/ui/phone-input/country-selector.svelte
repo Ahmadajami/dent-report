@@ -9,7 +9,7 @@
 	import { ScrollArea } from '$lib/components/ui/scroll-area';
 	import CheckIcon from '@lucide/svelte/icons/check';
 	import ChevronsUpDownIcon from '@lucide/svelte/icons/chevrons-up-down';
-	import { cn } from '$lib/utils/utils';
+	import { cn } from '$lib/utils';
 	import Flag from './flag.svelte';
 	import type { Country, CountryCode } from 'svelte-tel-input/types';
 
@@ -53,12 +53,14 @@
 				{...props}
 				type="button"
 				variant="outline"
-				class={cn('flex shrink-0 gap-1 rounded-l-lg rounded-r-none px-3')}
+				class={cn(
+					'flex shrink-0 gap-1 rounded-l-lg rounded-r-none px-3 rtl:rounded-l-none rtl:rounded-r-lg'
+				)}
 				{disabled}
 			>
 				<Flag country={selectedCountry} />
 				<ChevronsUpDownIcon
-					class={cn('-mr-2 h-4 w-4 opacity-50', disabled ? 'hidden' : 'opacity-100')}
+					class={cn('h-4 w-4 opacity-50 ltr:-mr-2 rtl:mr-2', disabled ? 'hidden' : 'opacity-100')}
 				/>
 			</Button>
 		{/snippet}

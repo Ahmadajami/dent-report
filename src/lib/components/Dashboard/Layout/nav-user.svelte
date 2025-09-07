@@ -15,23 +15,13 @@
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
 	import { useSidebar } from '$lib/components/ui/sidebar/index.js';
 	import Switch from '$lib/components/ui/switch/switch.svelte';
-	import { getLocale, setLocale } from '$lib/paraglide/runtime';
-	let { user }: { user: UserModel } = $props();
+	import { deLocalizeHref, getLocale, setLocale } from '$lib/paraglide/runtime';
+	let { user, formLoading = $bindable<boolean>(false) }: { user: UserModel; formLoading: boolean } =
+		$props();
 	const sidebar = useSidebar();
 	const isArabic = getLocale() == 'ar';
 </script>
 
-{#snippet logout()}
-	<form
-		action="/logout"
-		use:enhance
-		method="POST"
-		class=" hover:bg-accent hover:text-accent-foreground flex justify-start gap-2 rounded-sm px-2 py-1.5 text-sm [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
-	>
-		<LogOutIcon class="shrink-0" />
-		<button class="flex-1 text-start" type="submit">logout</button>
-	</form>
-{/snippet}
 <Sidebar.Menu>
 	<Sidebar.MenuItem>
 		<DropdownMenu.Root>
@@ -109,7 +99,30 @@
 					</DropdownMenu.Item>
 				</DropdownMenu.Group>
 				<DropdownMenu.Separator />
-				<DropdownMenu.Item child={logout} />
+
+				<DropdownMenu.Item>
+					{#snippet child()}
+						<form
+							action={deLocalizeHref('/logout')}
+							use:enhance={() => {
+								formLoading = true;
+								return async ({ update }) => {
+									formLoading = false;
+									update();
+								};
+							}}
+							method="POST"
+						>
+							<button
+								type="submit"
+								class=" hover:bg-accent inline-flex w-full items-center text-start"
+							>
+								<LogOutIcon class="mr-2 shrink-0 text-sm" size="20" />
+								<span>Logout</span>
+							</button>
+						</form>
+					{/snippet}
+				</DropdownMenu.Item>
 			</DropdownMenu.Content>
 		</DropdownMenu.Root>
 	</Sidebar.MenuItem>

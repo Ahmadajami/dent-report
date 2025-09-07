@@ -120,8 +120,6 @@
 
 <script lang="ts">
 	import { getLocale } from '$lib/paraglide/runtime';
-	//import NavMain from '$lib/components/Dashboard/Layout/nav-main.svelte';
-	//import NavProjects from '$lib/components/Dashboard/Layout/nav-projects.svelte';
 	import NavUser from '$lib/components/Dashboard/Layout/nav-user.svelte';
 	import TeamSwitcher from '$lib/components/Dashboard/Layout/team-switcher.svelte';
 	import * as Sidebar from '$lib/components/ui/sidebar/index.js';
@@ -130,11 +128,15 @@
 	import { page } from '$app/state';
 	import GptSidebar from './gpt-sidebar.svelte';
 	let isArabic = getLocale() == 'ar';
+	type SidebarWithFormLoadingProps = ComponentProps<typeof Sidebar.Root> & {
+		formLoading?: boolean;
+	};
 	let {
 		ref = $bindable(null),
+		formLoading = $bindable<boolean>(false),
 		collapsible = 'icon',
 		...restProps
-	}: ComponentProps<typeof Sidebar.Root> = $props();
+	}: SidebarWithFormLoadingProps = $props();
 </script>
 
 <Sidebar.Root variant="inset" side={isArabic ? 'right' : 'left'} {collapsible} {...restProps}>
@@ -147,7 +149,7 @@
 		<NavProjects projects={data.projects} />-->
 	</Sidebar.Content>
 	<Sidebar.Footer>
-		<NavUser user={page.data.user} />
+		<NavUser bind:formLoading user={page.data.user} />
 	</Sidebar.Footer>
 	<!--Sidebar.Rail is A Verticale component to with transpaertn exsistence whive work like triggers-->
 	<Sidebar.Rail />

@@ -23,7 +23,7 @@ export async function loginUser(
 		body: JSON.stringify({
 			username: 'emilys',
 			password: 'emilyspass',
-			expiresInMins: 2
+			expiresInMins: 60
 		}),
 		credentials: 'include'
 	});

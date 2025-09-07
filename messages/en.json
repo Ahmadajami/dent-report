@@ -85,5 +85,13 @@
 	"medical_center": "Medical Center",
 	"center_doctor_count_error": "At least 2 doctors are required for a Medical Center",
 	"gender_error": "Select a gender",
-	"specialization_wrong": "Please select a specialization"
+	"specialization_wrong": "Please select a specialization",
+	"back": "Back",
+	"sign_up_header": "Sign Up With Your",
+	"clinic_title": "Clinic Name",
+	"specialization_title": "Specialization",
+	"doctors": "Doctors",
+	"add_doctor": "Add Doctor",
+	"late_moving_dingo_talk": "Manage your patients and generate reports",
+	"wild_low_warbler_reside": "A simple and powerful tool for dental professionals."
 }
